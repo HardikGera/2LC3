@@ -539,4 +539,805 @@ Proof:
     ⟩
     i ≤ k ≥ j  ∧  xs = xs₀ ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟
 
+
+11.1
+
+Theorem (KA.36) “Idempotency of *”:  R * * = R *
+Proof:
+    R *
+  ⊆⟨ “* increases” ⟩ 
+    R * *
+  =⟨ “Identity of ⨾” ⟩
+    R * * ⨾ 𝕀
+  ⊆⟨ Monotonicity with “Reflexivity of *” ⟩
+    R * * ⨾ R *
+  ⊆⟨ Subproof for `R * * ⨾ R * ⊆ R *`: 
+       Using “Left-induction for *”:
+         Subproof for `R * ⨾ R * ⊆ R *`:
+           By “Transitivity of *” 
+    ⟩
+    R *
+
+Theorem (KA.34) “Left-induction with ∪ for *”:
+    R ⨾ S ∪ T ⊆ S  ⇒  R * ⨾ T ⊆ S
+Proof:
+  Assuming (1) `R ⨾ S ∪ T ⊆ S`
+    and using with “Characterisation of ∪”:
+      R * ⨾ T
+    ⊆⟨ Monotonicity with Assumption (1)⟩
+      R * ⨾ S
+    ⊆⟨ Subproof for `R * ⨾ S ⊆ S`:
+         Using “Left-induction for *”:
+           Subproof for `R ⨾ S ⊆ S`:
+             By Assumption (1) 
+      ⟩ 
+      S
+
+Theorem (KA.32) “Refl-trans closure minimality”:
+    R ⊆ S  ∧  reflexive S  ∧  transitive S  ⇒  R * ⊆ S
+Proof:
+  Assuming `R ⊆ S`,
+           (1) `reflexive S` and using with “Definition of reflexivity”,
+           (2) `transitive S` and using with “Definition of transitivity”:
+      R *  
+    ⊆⟨ Monotonicity with Assumption `R ⊆ S` ⟩
+      S *
+    =⟨ “Refl-trans *” with Assumption (1) and Assumption (2)⟩
+      S
+
+Theorem (KA.31) “Refl-trans *”:
+  reflexive R  ∧  transitive R  ⇒  R * = R
+Proof:
+  Assuming (1) `reflexive R` and using with “Definition of reflexivity”,
+           (2) `transitive R` and using with “Definition of transitivity”:
+      R
+    ⊆⟨ “* increases” ⟩
+      R *
+    =⟨ “Identity of ⨾” ⟩
+      R * ⨾ 𝕀
+    ⊆⟨ Monotonicity with Assumption (1) ⟩
+      R * ⨾ R 
+    ⊆⟨ Subproof for `R * ⨾ R ⊆ R`: 
+         Using “Left-induction for *”:
+           Subproof for `R ⨾ R ⊆ R`:
+             By Assumption (2)
+      ⟩
+      R  
+
+Theorem (KA.30) “Subidentity *”: R ⊆ 𝕀  ⇒  R * = 𝕀
+Proof:
+  Assuming `R ⊆ 𝕀`:
+    Using “Mutual inclusion”:
+      Subproof for `𝕀 ⊆ R *`:
+          𝕀
+        ⊆⟨ “Reflexivity of *”⟩
+          R *
+      Subproof for `R * ⊆ 𝕀`:
+          R * ⊆ 𝕀
+        =⟨ “Identity of ⨾” ⟩
+          R * ⨾ 𝕀 ⊆ 𝕀
+        ⇐⟨ “Left-induction for *” ⟩
+          R ⨾ 𝕀 ⊆ 𝕀
+        =⟨ “Identity of ⨾” ⟩
+          R ⊆ 𝕀
+
+Theorem (KA.28) “Reflexive closure *”: (𝕀 ∪ R) * = R *
+Proof:
+    R *
+  ⊆⟨ Monotonicity with “Weakening for ∪”⟩
+    (R ∪ 𝕀) *
+  =⟨ “Union *” ⟩
+    (R * ⨾ 𝕀) * ⨾ R *
+  =⟨ “Identity of ⨾” ⟩
+    R * * ⨾ R *
+  ⊆⟨ Monotonicity with “Subproof1”⟩
+    R * ⨾ R *
+  =⟨ “⨾-idempotency of *”⟩
+    R *
+
+Lemma “Subproof1”: R * * ⊆ R *
+Proof:
+    R * *
+  =⟨ “Identity of ⨾” ⟩
+    R * * ⨾ 𝕀
+  ⊆⟨ Monotonicity with “Reflexivity of *” ⟩
+    R * * ⨾ R *
+  ⊆⟨ Subproof for `R * * ⨾ R * ⊆ R *`: 
+       Using “Left-induction for *”:
+         Subproof for `R * ⨾ R * ⊆ R *`:
+           By “Transitivity of *” 
+    ⟩
+    R *
+
+Theorem (KA.27) “Composition *”:  (R ⨾ S) * = 𝕀 ∪ R ⨾ (S ⨾ R) * ⨾ S
+Proof:
+    (R ⨾ S) *
+  =⟨ “Left-iteration for *” ⟩
+    𝕀 ∪ R ⨾ S ⨾ (R ⨾ S) *
+  =⟨ “Composition * shifting” ⟩
+    𝕀 ∪ R ⨾ (S ⨾ R) * ⨾ S
+
+Theorem (KA.26) “Composition * shifting”: (R ⨾ S) * ⨾ R = R ⨾ (S ⨾ R) *
+Proof:
+    (R ⨾ S) * ⨾ R
+  =⟨ “Identity of ⨾” ⟩
+    (R ⨾ S) * ⨾ R ⨾ 𝕀
+  ⊆⟨ Monotonicity with “Reflexivity of *” ⟩
+    (R ⨾ S) * ⨾ R ⨾ (S ⨾ R) *
+  ⊆⟨Subproof for `(R ⨾ S) * ⨾ R ⨾ (S ⨾ R) * ⊆ R ⨾ (S ⨾ R) *`: 
+      Using “Left-induction for *”:
+        Subproof for `(R ⨾ S) ⨾ R ⨾ (S ⨾ R) * ⊆ R ⨾ (S ⨾ R) *`:
+              (R ⨾ S) ⨾ R ⨾ (S ⨾ R) *
+            ⊆⟨ Monotonicity with “Left-iteration ⊆ in *” ⟩ 
+              R ⨾ (S ⨾ R) *
+
+
+    ⟩
+
+    R ⨾ (S ⨾ R) * 
+  =⟨ “Identity of ⨾” ⟩
+    𝕀 ⨾ R ⨾ (S ⨾ R) * 
+  ⊆⟨ Monotonicity with “Reflexivity of *” ⟩
+    (R ⨾ S) * ⨾ R ⨾ (S ⨾ R) *
+  ⊆⟨ Subproof for `(R ⨾ S) * ⨾ R ⨾ (S ⨾ R) * ⊆ (R ⨾ S) * ⨾ R`:
+       Using “Right-induction for *”:
+         Subproof for `(R ⨾ S) * ⨾ R ⨾ (S ⨾ R) ⊆ (R ⨾ S) * ⨾ R`:
+                 (R ⨾ S) * ⨾ R ⨾ S ⨾ R
+              ⊆⟨ Monotonicity with “Right-iteration ⊆ in *”⟩
+                 (R ⨾ S) * ⨾ R
+    ⟩
+    (R ⨾ S) * ⨾ R
+
+Theorem (KA.22) “Subidentity decomposition entering * from left”:
+    G ⨾ F ⊆ 𝕀
+  ⇒ (F ⨾ R ⨾ G) * ⨾ F ⊆ F ⨾ R *
+Proof:
+  Assuming `G ⨾ F ⊆ 𝕀`:
+      (F ⨾ R ⨾ G) * ⨾ F
+    =⟨“Identity of ⨾”⟩
+      (F ⨾ R ⨾ G) * ⨾ F ⨾ 𝕀
+    ⊆⟨ Monotonicity with “Reflexivity of *” ⟩
+      (F ⨾ R ⨾ G) * ⨾ F ⨾ R *
+    ⊆⟨ Subproof for `(F ⨾ R ⨾ G) * ⨾ F ⨾ R * ⊆ F ⨾ R *`:
+        Using “Left-induction for *”:
+          Subproof for `F ⨾ R ⨾ G ⨾ F ⨾ R * ⊆ F ⨾ R *`:
+              F ⨾ R ⨾ G ⨾ F ⨾ R *
+            ⊆⟨Monotonicity with Assumption `G ⨾ F ⊆ 𝕀`⟩ 
+              F ⨾ R ⨾ 𝕀 ⨾ R *
+            =⟨ “Identity of ⨾”⟩ 
+              F ⨾ R ⨾ R *
+            ⊆⟨ Monotonicity with “Left-iteration ⊆ in *”⟩ 
+              F ⨾ R *
+      ⟩
+      F ⨾ R *
+
+  Assuming `R ⊆ S`:
+      R *
+    =⟨ “Identity of ⨾”⟩
+      R * ⨾ 𝕀
+    ⊆⟨ Monotonicity with “Reflexivity of *”⟩
+      R * ⨾ S *
+    ⊆⟨ Subproof for `R * ⨾ S * ⊆ S *`:
+         Using “Left-induction for *”:
+           Subproof for `R ⨾ S * ⊆ S *`:
+               R ⨾ S *
+             ⊆⟨ Monotonicity with Assumption `R ⊆ S` ⟩
+               S ⨾ S *
+             ⊆⟨ “Left-iteration ⊆ in *” ⟩
+               S *  
+      ⟩  
+      S *
+
+Theorem (KA.14) “Shuffle *”:  R ⨾ R * = R * ⨾ R
+Proof:
+    R ⨾ R *
+  =⟨ “Identity of ⨾” ⟩
+    𝕀 ⨾ R ⨾ R * 
+  ⊆⟨ Monotonicity with “Reflexivity of *” ⟩
+    R * ⨾ R ⨾ R *
+  ⊆⟨ “Right-induction for *” with 
+        Subproof for `R * ⨾ R ⨾ R ⊆ R * ⨾ R`:
+            R * ⨾ R ⨾ R
+          ⊆⟨ Monotonicity with “Right-iteration ⊆ in *” ⟩
+            R * ⨾ R 
+    ⟩ 
+    R * ⨾ R
+  =⟨ “Identity of ⨾” ⟩
+    R * ⨾ R ⨾ 𝕀
+  ⊆⟨ Monotonicity with “Reflexivity of *” ⟩
+    R * ⨾ R ⨾ R *
+  ⊆⟨ “Left-induction for *” with 
+        Subproof for `R ⨾ R ⨾ R * ⊆ R ⨾ R *`:
+            R ⨾ R ⨾ R *
+          ⊆⟨ Monotonicity with “Left-iteration ⊆ in *” ⟩
+            R ⨾ R * 
+    ⟩ 
+    R ⨾ R *
+
+11.3
+
+Lemma “ExprV evaluation after substitution”:
+  ∀ e • evalV s (substV v f e) = evalV (s ⊕′ ⟨v, evalV s f⟩) e
+Proof:
+  Using “Induction over `ExprV`”:
+    Subproof for `∀ u • evalV s (substV v f (Var′ u)) = evalV (s ⊕′ ⟨v, evalV s f⟩) (Var′ u)`:
+      For any `u`:
+        By cases: `u = v` , `u ≠ v`
+          Completeness: By “Excluded middle” and “Definition of ≠”
+          Case `u ≠ v`:
+              evalV s (substV v f (Var′ u)) 
+            =⟨ “Definition of `substV`” with Assumption `u ≠ v` ⟩
+              evalV s ( Var′ u )
+            =⟨ “Definition of `evalV`” ⟩
+              s u 
+            =⟨ “Definition of function override” with Assumption `u ≠ v` ⟩  
+              (s ⊕′ ⟨v, evalV s f⟩) (u)
+            =⟨ “Definition of `evalV`” ⟩  
+              evalV (s ⊕′ ⟨v, evalV s f⟩) (Var′ u)
+
+ ╍╍╍ “Definition of `substV`”: v ≠ w ⇒ substV v e (Var′ w) = Var′ w
+ ╍╍╍ “Definition of function override”:  (x ≠ z ⇒ (f ⊕′ ⟨ x, y ⟩) z = f z)
+╍╍╍ “Definition of `evalV`”:  evalV s (Var′ v) = s v
+
+
+          Case `u = v`:
+              evalV s (substV v f (Var′ u)) 
+            =⟨ Assumption `u = v` ⟩
+              evalV s (substV v f (Var′ v))
+            =⟨ “Definition of `substV`” ⟩   
+              evalV s f
+            =⟨ “Definition of function override” with Assumption `u = v` ⟩  
+              (s ⊕′ ⟨v, evalV s f⟩) (v)  
+            =⟨ “Definition of `evalV`” ⟩  
+              evalV (s ⊕′ ⟨v, evalV s f⟩) (Var′ v)  
+            =⟨ Assumption `u = v` ⟩
+              evalV (s ⊕′ ⟨v, evalV s f⟩) (Var′ u)  
+
+╍╍╍ “Definition of `evalV`”:  evalV s (Var′ v) = s v
+╍╍╍ “Definition of `substV`”: substV v e (Var′ v) = e
+╍╍╍ “Definition of function override”:  (x = z ⇒ (f ⊕′ ⟨ x, y ⟩) z = y)
+
+
+    Subproof for `∀ n • evalV s (substV v f (Int′ n)) = evalV (s ⊕′ ⟨v, evalV s f⟩) (Int′ n)`:
+      For any `n`:
+            evalV s (substV v f (Int′ n))
+          =⟨ “Definition of `substV`” ⟩
+            evalV s (Int′ n)
+          =⟨ “Definition of `evalV`” ⟩ 
+            n
+          =⟨ “Definition of `evalV`” ⟩
+            evalV (s ⊕′ ⟨v, evalV s f⟩) (Int′ n)
+
+
+
+    Subproof:  ╍╍╍  `(∀ e₁, e₂ ❙ P[e ≔ e₁] ∧ P[e ≔ e₂] • P[e ≔ e₁ +′ e₂])`:
+        For any `e1 , e2` satisfying (1)
+          `evalV s (substV v f e₁) = evalV (s ⊕′ ⟨v, evalV s f⟩) e₁   ∧
+           evalV s (substV v f e₂) = evalV (s ⊕′ ⟨v, evalV s f⟩) e₂`:
+
+            evalV s (substV v f (e₁ +′ e₂)) 
+          =⟨ “Definition of `substV`” ⟩
+            evalV s (substV v f (e₁) +′ substV v f (e₂)) 
+          =⟨ “Definition of `evalV`” ⟩ 
+            evalV s (substV v f (e₁))  + evalV s (substV v f (e₂))
+          =⟨ Assumption (1) ⟩ 
+            (evalV (s ⊕′ ⟨v, evalV s f⟩) e₁)  +  (evalV (s ⊕′ ⟨v, evalV s f⟩) e₂)
+          =⟨ “Definition of `evalV`” ⟩ 
+            evalV (s ⊕′ ⟨v, evalV s f⟩) (e₁ +′ e₂)
+              
+        
+    Subproof:
+        For any `e1 , e2` satisfying (1)
+          `evalV s (substV v f e₁) = evalV (s ⊕′ ⟨v, evalV s f⟩) e₁   ∧
+           evalV s (substV v f e₂) = evalV (s ⊕′ ⟨v, evalV s f⟩) e₂`:
+
+            evalV s (substV v f (e₁ ·′ e₂)) 
+          =⟨ “Definition of `substV`” ⟩
+            evalV s (substV v f (e₁) ·′ substV v f (e₂)) 
+          =⟨ “Definition of `evalV`” ⟩ 
+            evalV s (substV v f (e₁))  · evalV s (substV v f (e₂))
+          =⟨ Assumption (1) ⟩ 
+            (evalV (s ⊕′ ⟨v, evalV s f⟩) e₁)  ·  (evalV (s ⊕′ ⟨v, evalV s f⟩) e₂)
+          =⟨ “Definition of `evalV`” ⟩ 
+            evalV (s ⊕′ ⟨v, evalV s f⟩) (e₁ ·′ e₂)
+
+Lemma “Complement of simplee set comprehension”:
+  ~ { x ❙ P } = { x ❙ ¬ P }
+Proof:
+  Using “Set extensionality”:
+    For any `e`:
+        e ∈ ~ { x ❙ P }
+      =⟨ “Set complement” ⟩
+        ¬ (e ∈ { x ❙ P })
+      =⟨ “Simple membership”⟩
+        ¬ P[x ≔ e]
+      =⟨ Substitution ⟩
+        (¬ P)[x ≔ e]
+      =⟨ “Simple membership”⟩
+        e ∈ { x ❙ ¬ P }
+
+Lemma “Negation on `Expr𝔹`”:     sat (¬′ b)      =  ~ (sat b)
+Proof:
+    sat (¬′ b)
+  =⟨ “Definition of `sat`” ⟩
+    { s ❙ eval𝔹 s (¬′ b) }
+  =⟨ “Definition of `eval𝔹`” ⟩
+    { s ❙ ¬ (eval𝔹 s b) } 
+  =⟨ “Complement of simplee set comprehension” ⟩
+    ~ { s ❙ (eval𝔹 s b) }
+  =⟨ “Definition of `sat`”⟩
+    ~ (sat b)
+
+Lemma “Conjunction on `Expr𝔹`”:  sat (b₁ ∧′ b₂)  =  sat b₁ ∩ sat b₂
+Proof:
+  Using “Set extensionality”:
+      s ∈ sat (b₁ ∧′ b₂)
+    ≡⟨“Definition of `sat`” ⟩
+      s ∈ { s ❙ eval𝔹 s (b₁ ∧′ b₂) }
+    ≡⟨ “Simple membership”⟩
+      eval𝔹 s (b₁ ∧′ b₂)
+    ≡⟨ “Definition of `eval𝔹`” ⟩
+      eval𝔹 s b₁ ∧ eval𝔹 s b₂
+    ≡⟨ “Simple membership” ⟩
+      s ∈ { s ❙ eval𝔹 s b₁ } ∧ s ∈ { s ❙ eval𝔹 s b₂ }
+    ≡⟨ “Definition of `sat`”⟩
+      s ∈ sat b₁ ∧ s ∈ sat b₂
+    ≡⟨ “Set intersection”⟩
+      s ∈ sat b₁ ∩ sat b₂
+
+
+Lemma “Expr𝔹 evaluation after substitution”:
+  ∀ b • eval𝔹 s (subst𝔹 v f b) = eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b
+Proof:
+  Using “Induction over `Expr𝔹`”:
+    Subproof:
+        eval𝔹 s (subst𝔹 v f false′)
+      ≡⟨ “Definition of `subst𝔹`”  ⟩
+        eval𝔹 s false′
+      ≡⟨“Definition of `eval𝔹`”⟩
+        false
+      ≡⟨ “Definition of `eval𝔹`”⟩
+        eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) false′
+    Subproof:
+        eval𝔹 s (subst𝔹 v f true′)
+      =⟨ “Definition of `subst𝔹`” ⟩
+        eval𝔹 s true′
+      =⟨ “Definition of `eval𝔹`”⟩
+        true
+      =⟨ “Definition of `eval𝔹`”⟩
+        eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) true′
+    Subproof:
+      For any `e₁, e₂`:
+          eval𝔹 s (subst𝔹 v f (e₁ =′ e₂))
+        =⟨ “Definition of `subst𝔹`” ⟩
+          eval𝔹 s (substV v f e₁ =′ substV v f e₂)
+        =⟨ “Definition of `eval𝔹`”⟩
+          evalV s (substV v f e₁) = evalV s (substV v f e₂)
+        =⟨ “ExprV evaluation after substitution”⟩
+          evalV (s ⊕′ ⟨v, evalV s f⟩) e₁ =
+          evalV (s ⊕′ ⟨v, evalV s f⟩) e₂
+        =⟨“Definition of `eval𝔹`”⟩  
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) (e₁ =′ e₂)
+    Subproof:
+      For any `b` satisfying “IndHyp”
+            `eval𝔹 s (subst𝔹 v f b) = eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b`:
+          eval𝔹 s (subst𝔹 v f (¬′ b))
+        =⟨“Definition of `subst𝔹`”⟩
+          eval𝔹 s (¬′ (subst𝔹 v f b))
+        =⟨ “Definition of `eval𝔹`”⟩
+          ¬ (eval𝔹 s (subst𝔹 v f b))
+        =⟨ Assumption “IndHyp”⟩
+          ¬ (eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b)
+        =⟨ “Definition of `eval𝔹`”⟩
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) (¬′ b)             
+
+    Subproof:
+      For any `b₁, b₂` satisfying “IndHyp”
+             `eval𝔹 s (subst𝔹 v f b₁) = eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₁ ∧ 
+              eval𝔹 s (subst𝔹 v f b₂) = eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₂`:
+          eval𝔹 s (subst𝔹 v f (b₁ ∧′ b₂))
+        =⟨ “Definition of `subst𝔹`”⟩
+          eval𝔹 s (subst𝔹 v f b₁ ∧′ subst𝔹 v f b₂)
+        =⟨ “Definition of `eval𝔹`”⟩
+          eval𝔹 s (subst𝔹 v f b₁) ∧ 
+          eval𝔹 s (subst𝔹 v f b₂)
+        =⟨ Assumption “IndHyp”⟩
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₁ ∧
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₂
+        =⟨ “Definition of `eval𝔹`”⟩
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) (b₁ ∧′ b₂)
+    Subproof:
+      For any `b₁, b₂` satisfying “IndHyp”
+             `eval𝔹 s (subst𝔹 v f b₁) = eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₁ ∧ 
+              eval𝔹 s (subst𝔹 v f b₂) = eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₂`:
+          eval𝔹 s (subst𝔹 v f (b₁ ∨′ b₂))
+        =⟨ “Definition of `subst𝔹`”⟩
+          eval𝔹 s (subst𝔹 v f b₁ ∨′ subst𝔹 v f b₂)
+        =⟨ “Definition of `eval𝔹`”⟩
+          eval𝔹 s (subst𝔹 v f b₁) ∨ 
+          eval𝔹 s (subst𝔹 v f b₂)
+        =⟨ Assumption “IndHyp”⟩
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₁ ∨
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) b₂
+        =⟨ “Definition of `eval𝔹`”⟩
+          eval𝔹 (s ⊕′ ⟨v, evalV s f⟩) (b₁ ∨′ b₂)
+
+11.4
+
+Theorem “Partial correctness via ∀”:
+  (P ⇒⁅ C ⁆ Q)
+  ≡ ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ⇒ s₂ ∈ sat Q
+Proof:
+    (P ⇒⁅ C ⁆ Q)
+  ≡⟨ “Partial correctness” ⟩
+    ⟦ C ⟧ ⦇ sat P ⦈ ⊆ sat Q
+  ≡⟨ “Set inclusion” ⟩
+    ∀ s₂ • s₂ ∈ ⟦ C ⟧ ⦇ sat P ⦈ ⇒ s₂ ∈ sat Q
+  ≡⟨ “Relational image”⟩
+    ∀ s₂ • (∃ s₁ ❙ s₁ ∈ sat P • s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ) ⇒ s₂ ∈ sat Q
+  ≡⟨ “Material implication” ⟩
+    ∀ s₂ • ¬ (∃ s₁ ❙ s₁ ∈ sat P • s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ) ∨ s₂ ∈ sat Q
+  ≡⟨ “Generalised De Morgan” ⟩
+    ∀ s₂ • (∀ s₁ ❙ s₁ ∈ sat P • ¬ (s₁ ⦗ ⟦ C ⟧ ⦘ s₂ )) ∨ s₂ ∈ sat Q
+  ≡⟨ “Distributivity of ∨ over ∀” ⟩
+    ∀ s₂ • ∀ s₁ ❙ s₁ ∈ sat P • ¬ (s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ) ∨ s₂ ∈ sat Q
+  ≡⟨ “Material implication” ⟩
+    ∀ s₂ • ∀ s₁ ❙ s₁ ∈ sat P • (s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ) ⇒ s₂ ∈ sat Q
+  ≡⟨ “Trading for ∀”⟩
+    ∀ s₂ • ∀ s₁ • s₁ ∈ sat P ∧ (s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ) ⇒ s₂ ∈ sat Q
+  ≡⟨ “Nesting for ∀”, “Dummy list permutation for ∀”⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ⇒ s₂ ∈ sat Q
+
+Lemma “Relational image under {}”:  {} ⦇ P ⦈ = {}
+Proof:
+  Using “Set extensionality”:
+      y  ∈  {} ⦇ P ⦈
+    =⟨ “Definition of ⦇_⦈” ⟩
+      y ∈ (Ran (P ◁ {}))  
+    ≡⟨ “Membership in `Ran`” ⟩
+      (∃ x • x ⦗ (P ◁ {}) ⦘ y )  
+    ≡⟨ “Relationship via ◁” ⟩
+      (∃ x • x ∈ P ∧ x ⦗ {} ⦘ y  )      
+    ≡⟨ “Empty relation” ⟩
+      (∃ x • x ∈ P ∧ false  )      
+    ≡⟨ “Zero of ∧” ⟩ 
+      (∃ x • false)
+    ≡⟨ “False ∃ body” ⟩       
+      false
+    ≡⟨ “Empty set” ⟩ 
+      y ∈ {} 
+
+Theorem “Partial correctness of `while true`”:
+    P ⇒⁅ while true′ do C od ⁆ Q
+Proof:
+    P ⇒⁅ while true′ do C od ⁆ Q
+  ≡⟨ “Partial correctness via ∀”⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦  while true′ do C od  ⟧ ⦘ s₂ ⇒ s₂ ∈ sat Q
+  ≡⟨ “Semantics of `while`” ⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ (sat true′ ◁ ⟦ C ⟧) * ⩥ sat true′ ⦘ s₂ ⇒ s₂ ∈ sat Q
+  ≡⟨ “sat true′” ⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ (𝐔 ◁ ⟦ C ⟧) * ⩥ 𝐔 ⦘ s₂ ⇒ s₂ ∈ sat Q
+  =⟨“BC”⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ {} ⦘ s₂ ⇒ s₂ ∈ sat Q
+  ≡⟨ “Empty relation”⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ false ⇒ s₂ ∈ sat Q
+  ≡⟨ “ex falso quodlibet”, “Zero of ∧”⟩
+    ∀ s₁, s₂ • true
+  ≡⟨“Nesting for ∀”, “True ∀ body”⟩
+    true
+
+Lemma “BC”: P ⩥ 𝐔 = {}
+Proof:
+  Using “Relation extensionality”:
+    For any `x , y`:
+        x ⦗ P ⩥ 𝐔 ⦘ y
+      ≡⟨ “Relationship via ⩥” ⟩ 
+        x ⦗ P ⦘ y ∧  ¬ (y ∈ 𝐔)
+      ≡⟨ “Universal set” ⟩
+        x ⦗ P ⦘ y ∧  ¬ (true) 
+      ≡⟨ “Definition of `false`” and “Zero of ∧” ⟩ 
+        false
+      ≡⟨ “Empty relation” ⟩ 
+        x ⦗ {} ⦘ y
+
+
+Theorem “`skip` rule”:  P ⇒⁅ skip ⁆ P
+Proof:
+    P ⇒⁅ skip ⁆ P
+  ≡⟨ “Partial correctness via ∀”⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦ skip ⟧ ⦘ s₂ ⇒ s₂ ∈ sat P
+  ≡⟨ “Semantics of `skip`”⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ 𝕀 ⦘ s₂ ⇒ s₂ ∈ sat P
+  ≡⟨ “Identity relation” ⟩
+    ∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ = s₂ ⇒ s₂ ∈ sat P
+  ≡⟨ “Nesting for ∀”⟩
+    ∀ s₁ • ∀ s₂ • s₁ ∈ sat P ∧ s₁ = s₂ ⇒ s₂ ∈ sat P
+  ≡⟨ “Trading for ∀”, “One-point rule for ∀”, Substitution⟩
+    true
+  
+
+Lemma “Relational image under 𝕀”:    𝕀 ⦇ P ⦈ = P
+Proof: 
+  Using “Set extensionality”:
+      y ∈ 𝕀 ⦇ P ⦈
+    ≡⟨ “Definition of ⦇_⦈” ⟩
+      y ∈ Ran (P ◁ 𝕀)
+    ≡⟨ “Membership in `Ran`” ⟩
+      ∃ x • x ⦗ P ◁ 𝕀 ⦘ y 
+    ≡⟨ “Relationship via ◁” ⟩ 
+      ∃ x • x ∈ P ∧ x ⦗ 𝕀 ⦘ y
+    ≡⟨ “Relationship via 𝕀” ⟩
+      ∃ x • x ∈ P ∧ x = y
+    ≡⟨ “Reflexivity of ≡” ⟩ 
+      ∃ x • x = y  ∧  x ∈ P 
+    ≡⟨ “Trading for ∃” ⟩
+      ∃ x ❙ x = y  •  x ∈ P
+    ≡⟨ “One-point rule for ∃” and Substitution ⟩    
+      y ∈ P
+
+╍╍╍ “One-point rule for ∃”: (∃ x ❙ x = E • P ) ≡ P[x ≔ E]   
+╍╍╍ “Definition of ⦇_⦈” “Range of ◁”: R ⦇ A ⦈ = Ran (A ◁ R)
+╍╍╍ “Membership in Ran”: y ∈ Ran R ≡ (∃ x • x ⦗ R ⦘ y ) 
+╍╍╍  “Relationship via ◁”: x ⦗ A ◁ R ⦘ y ≡ x ∈ A ∧ x ⦗ R ⦘ y
+╍╍╍ “∃-Introduction”: P[x ≔ E] ⇒ (∃ x • P )
+╍╍╍ “Trading for ∃”: (∃ x ❙ R • P ) ≡ (∃ x • R ∧ P )
+
+Theorem “skip rule”:  P ⇒⁅ skip ⁆ P
+Proof:
+    P ⇒⁅ skip ⁆ P
+  ≡⟨ “Partial correctness” ⟩
+    ⟦ skip ⟧ ⦇ sat P ⦈ ⊆ sat P
+  ≡⟨ “Semantics of `skip`” ⟩
+    𝕀 ⦇ sat P ⦈ ⊆ sat P
+  ≡⟨ “Relational image under 𝕀” ⟩  
+    sat P ⊆ sat P
+  ≡⟨ “Reflexivity of ⊆” ⟩ 
+    true
+
+Lemma “Mono of mirror”: A ⊆ B ⇒ R ⦇ A ⦈ ⊆ R ⦇ B ⦈
+Proof:
+    R ⦇ A ⦈ ⊆ R ⦇ B ⦈
+  =⟨“Definition of ⦇_⦈”⟩
+    Ran (A ◁ R) ⊆ Ran (B ◁ R)
+  ⇐⟨ “Monotonicity of `Ran`” ⟩
+    (A ◁ R) ⊆ (B ◁ R)
+  ⇐⟨ “Monotonicity of ◁” ⟩
+    A ⊆ B
+
+Derived inference rule “Sequence”:
+    `P  ⇒⁅ C₁ ⁆  Q`,  `Q  ⇒⁅ C₂ ⁆  R`
+   ⊦————————————————————————————————
+      `P  ⇒⁅ C₁ ⍮ C₂ ⁆  R`
+Proof:
+  Assuming (C₁) `P  ⇒⁅ C₁ ⁆  Q` and using with “Partial correctness”,
+           (C₂) `Q  ⇒⁅ C₂ ⁆  R` and using with “Partial correctness”:
+      P  ⇒⁅ C₁ ⍮ C₂ ⁆  R
+    ≡⟨ “Partial correctness” ⟩
+      ⟦ C₁ ⍮ C₂ ⟧ ⦇ sat P ⦈ ⊆ sat R
+    ≡⟨ “Semantics of ⍮”⟩
+      (⟦ C₁ ⟧ ⨾ ⟦ C₂ ⟧) ⦇ sat P ⦈ ⊆ sat R
+    ≡⟨ “Relational image under ⨾”⟩
+      ⟦ C₂ ⟧ ⦇ (⟦ C₁ ⟧ ⦇ sat P ⦈) ⦈ ⊆ sat R
+    ⇐⟨ “Transitivity of ⊆” with “Mono of mirror” with Assumption (C₁) ⟩
+      ⟦ C₂ ⟧ ⦇ sat Q ⦈ ⊆ sat R
+    ≡⟨ Assumption (C₂)⟩
+      true
+
+Lemma “Rel img of union”: (A ∪ B) ⦇ C ⦈ = (A ⦇ C ⦈) ∪ (B ⦇ C ⦈)
+Proof:
+    (A ∪ B) ⦇ C ⦈
+  =⟨ “Definition of ⦇_⦈”⟩
+    Ran (C ◁ (A ∪ B))
+  =⟨“Distributivity of ◁ over relation union”⟩
+    Ran ((C ◁ A) ∪ (C ◁ B))
+  =⟨ “Range of union”⟩ 
+    Ran (C ◁ A) ∪ Ran (C ◁ B)
+  =⟨ “Definition of ⦇_⦈”⟩
+    (A ⦇ C ⦈) ∪ (B ⦇ C ⦈)
+
+Lemma “Rel img of ◁”: (A ◁ R) ⦇ B ⦈ = R ⦇ A ∩ B ⦈
+Proof:
+    (A ◁ R) ⦇ B ⦈
+  =⟨ “Definition of ⦇_⦈”⟩
+    Ran (B ◁ (A ◁ R))
+  =⟨ “Nested ◁”⟩
+    Ran ((B ∩ A) ◁ R )
+  =⟨ “Definition of ⦇_⦈”⟩
+    R ⦇ A ∩ B ⦈
+
+Derived inference rule “Conditional”:
+
+      `B ∧′ P ⇒⁅ C₁ ⁆ Q`,   `¬′ B ∧′ P ⇒⁅ C₂ ⁆ Q`
+    ⊦————————————————————————————————————————————
+        `P ⇒⁅ if B then C₁ else C₂ fi ⁆ Q`
+
+Proof:
+  Assuming (1) `B ∧′ P ⇒⁅ C₁ ⁆ Q` and using with “Partial correctness”,
+           (2) `¬′ B ∧′ P ⇒⁅ C₂ ⁆ Q` and using with “Partial correctness”:
+      P ⇒⁅ if B then C₁ else C₂ fi ⁆ Q
+    =⟨ “Partial correctness” ⟩
+      ⟦ if B then C₁ else C₂ fi ⟧ ⦇ sat P ⦈ ⊆ sat Q
+    =⟨ “Semantics of `if`” ⟩ 
+      ((sat B ◁ ⟦ C₁ ⟧) ∪ (sat B ⩤ ⟦ C₂ ⟧)) ⦇ sat P ⦈ ⊆ sat Q
+    =⟨ “Rel img of union” ⟩
+      ((sat B ◁ ⟦ C₁ ⟧) ⦇ sat P ⦈) ∪ ((sat B ⩤ ⟦ C₂ ⟧) ⦇ sat P ⦈) ⊆ sat Q
+    =⟨ “Definition of ⩤ via ◁” ⟩ 
+      ((sat B ◁ ⟦ C₁ ⟧) ⦇ sat P ⦈) ∪ ((~ (sat B) ◁ ⟦ C₂ ⟧) ⦇ sat P ⦈) ⊆ sat Q
+    =⟨ “Rel img of ◁”⟩
+      (⟦ C₁ ⟧ ⦇ sat B ∩ sat P ⦈) ∪ (⟦ C₂ ⟧ ⦇ ~ (sat B) ∩ sat P ⦈) ⊆ sat Q
+    =⟨ “Characterisation of ∪”⟩ 
+      (⟦ C₁ ⟧ ⦇ sat B ∩ sat P ⦈) ⊆ sat Q ∧ (⟦ C₂ ⟧ ⦇ ~ (sat B) ∩ sat P ⦈) ⊆ sat Q
+    =⟨ “Conjunction on `Expr𝔹`”, “Negation on `Expr𝔹`”⟩
+      ⟦ C₁ ⟧ ⦇ sat (B ∧′ P) ⦈ ⊆ sat Q ∧ (⟦ C₂ ⟧ ⦇ sat ( ¬′ B ∧′ P) ⦈) ⊆ sat Q
+    =⟨ Assumptions (1) and (2), “Idempotency of ∧”⟩
+      true
+
+
+Derived inference rule “While”:
+                 `B ∧′ Q  ⇒⁅ C ⁆  Q`
+        ⊦—————————————————————————————————————
+          `Q  ⇒⁅ while B do C od ⁆  ¬′ B ∧′ Q`
+Proof:
+  Assuming “this” `B ∧′ Q  ⇒⁅ C ⁆  Q` and using with “Partial correctness”:
+    Side proof for (1)`(sat B ◁ ⟦ C ⟧) ⦇ sat Q ⦈ ⊆ sat Q`:
+        (sat B ◁ ⟦ C ⟧) ⦇ sat Q ⦈
+      =⟨ “Definition of ⦇_⦈”⟩
+        Ran (sat Q ◁ sat B ◁ ⟦ C ⟧)
+      =⟨ “Nested ◁”⟩
+        Ran ((sat Q ∩ sat B) ◁ ⟦ C ⟧)
+      =⟨ “Conjunction on `Expr𝔹`”⟩
+        Ran ((sat (Q ∧′ B)) ◁ ⟦ C ⟧)
+      =⟨ “Definition of ⦇_⦈”⟩
+        ⟦ C ⟧ ⦇ sat (Q ∧′ B) ⦈
+      ⊆⟨ Assumption “this” with “Partial correctness” ⟩ 
+        sat Q
+    Continuing:
+        Q  ⇒⁅ while B do C od ⁆  ¬′ B ∧′ Q
+      =⟨ “Partial correctness” ⟩
+        ⟦ while B do C od ⟧ ⦇ sat Q ⦈ ⊆ sat (¬′ B ∧′ Q)
+      =⟨ “Conjunction on `Expr𝔹`”, “Negation on `Expr𝔹`”⟩
+        ⟦ while B do C od ⟧ ⦇ sat Q ⦈ ⊆  ~ (sat B) ∩ sat Q
+      =⟨ “Semantics of `while`”⟩
+        ((sat B ◁ ⟦ C ⟧) * ⩥ sat B) ⦇ sat Q ⦈ ⊆  ~ (sat B) ∩ sat Q
+      =⟨ “Relational image under ⩥” ⟩
+        (sat B ◁ ⟦ C ⟧) * ⦇ sat Q ⦈  ∩  ~ (sat B) ⊆ ~ (sat B) ∩  sat Q
+      ⇐⟨ “Monotonicity of ∩” ⟩
+        ((sat B ◁ ⟦ C ⟧) * ⦇ sat Q ⦈) ⊆  sat Q
+      =⟨ “Relational image under *” with local property (1) ⟩
+        true
+
+Total Correctness
+
+
+Corollary “Inclusion of `sat`”:
+    b₁ ⊑ b₂  ≡  sat b₁ ⊆ sat b₂
+Proof:
+    b₁ ⊑ b₂
+  ≡⟨ “Semantic consequence in `Expr𝔹`” ⟩
+    ∀ s : Var → ℤ • eval𝔹 s b₁ ⇒ eval𝔹 s b₂   
+  ≡⟨ “Simple membership” ⟩
+    ∀ s • s ∈ { s ❙ (eval𝔹 s) b₁ } ⇒ s ∈ { s ❙ (eval𝔹 s) b₂ }
+  ≡⟨ “Set inclusion” ⟩
+    { s ❙ (eval𝔹 s) b₁ } ⊆ { s ❙ (eval𝔹 s) b₂ }
+  ≡⟨ “Definition of `sat`” ⟩
+    sat b₁ ⊆ sat b₂
+
+Derived inference rule “Strengthening the precondition”:
+    `P  ⊑  Q`,  `Q  ⇒⁅ C ⁆  R`
+   ⊦————————————————————————————————
+      `P  ⇒⁅ C ⁆  R`
+Proof:
+  Assuming (1) `P  ⊑  Q` and using with “Inclusion of `sat`” , 
+           (2) `Q  ⇒⁅ C ⁆  R` and using with “Partial correctness” :
+      P  ⇒⁅ C ⁆  R
+    ≡⟨ “Partial correctness” ⟩
+      ⟦ C ⟧ ⦇ sat P ⦈ ⊆ sat R
+    ⇐⟨ “Transitivity of ⊆” with “Monotonicity of ⦇_⦈” with Assumption (1) ⟩ 
+      ⟦ C ⟧ ⦇ sat Q ⦈ ⊆ sat R
+    ≡⟨Assumption (2)⟩
+      true
+
+Theorem “Distinguishing `Expr𝔹`”:
+   s₁ ≠ s₂ ⇒ ∃ b : Expr𝔹 • eval𝔹 s₁ b ≠ eval𝔹 s₂ b
+Proof:
+  Assuming `s₁ ≠ s₂`:
+      ∃ b • eval𝔹 s₁ b ≠ eval𝔹 s₂ b
+    ⇐⟨ “∃-Introduction” ⟩ 
+      (eval𝔹 s₁ b ≠ eval𝔹 s₂ b) [b ≔ (Int′ v =′ Var′ w)]
+    ≡⟨ Substitution ⟩ 
+      (eval𝔹 s₁ (Int′ v =′ Var′ w) ≠ eval𝔹 s₂ (Int′ v =′ Var′ w))
+    ≡⟨ “Definition of `eval𝔹`” ⟩
+      (evalV s₁ (Int′ v) = evalV s₁ (Var′ w)) ≠ (evalV s₂ (Int′ v) = evalV s₂ (Var′ w))
+    ≡⟨ “Definition of `evalV`” ⟩
+      ( v = s₁ w) ≠ (v = s₂ w)
+    
+    ≡⟨ ? ⟩
+      true
+
+Theorem “Total correctness via ∀”:
+  (P ⇒⁅⧼ C ⧽⁆ Q)
+  ≡ (∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ⇒ s₂ ∈ sat Q)
+  ∧ (∀ s₁ ❙ s₁ ∈ sat P • ∃ s₂ • s₁ ⦗ ⟦ C ⟧ ⦘ s₂)
+Proof:
+    (P ⇒⁅⧼ C ⧽⁆ Q)
+  ≡⟨ “Total correctness” ⟩
+    (⟦ C ⟧ ⦇ sat P ⦈ ⊆ sat Q)  ∧  sat P ⊆ Dom ⟦ C ⟧
+  ≡⟨ “Partial correctness” ⟩
+    (P ⇒⁅ C ⁆ Q) ∧ sat P ⊆ Dom ⟦ C ⟧
+  ≡⟨ “Partial correctness via ∀” ⟩
+    (∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ⇒ s₂ ∈ sat Q ) ∧ sat P ⊆ Dom ⟦ C ⟧
+  ≡⟨ “Definition of ⊆” ⟩ 
+    (∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ⇒ s₂ ∈ sat Q ) ∧ (∀ s₁ ❙ s₁ ∈ sat P • s₁ ∈ Dom ⟦ C ⟧ )
+  ≡⟨ “Membership in `Dom`” ⟩ 
+    (∀ s₁, s₂ • s₁ ∈ sat P ∧ s₁ ⦗ ⟦ C ⟧ ⦘ s₂ ⇒ s₂ ∈ sat Q) ∧ (∀ s₁ ❙ s₁ ∈ sat P • ∃ s₂ • s₁ ⦗ ⟦ C ⟧ ⦘ s₂)
+
+Derived inference rule “Sequence tot. corr.”:
+    `P  ⇒⁅⧼ C₁ ⧽⁆  Q`,  `Q  ⇒⁅⧼ C₂ ⧽⁆  R`
+   ⊦——————————————————————————————————————
+      `P  ⇒⁅⧼ C₁ ⍮ C₂ ⧽⁆  R`
+Proof:
+  Assuming (1) `P  ⇒⁅⧼ C₁ ⧽⁆  Q` and using with “Total correctness” , 
+            ╍╍╍ ⟦ C₁ ⟧ ⦇ sat P ⦈ ⊆ sat Q  ∧  sat P ⊆ Dom ⟦ C₁ ⟧ 
+           (2) `Q  ⇒⁅⧼ C₂ ⧽⁆  R` and using with “Total correctness” :
+            ╍╍╍ ⟦ C₂ ⟧ ⦇ sat Q ⦈ ⊆ sat R  ∧  sat Q ⊆ Dom ⟦ C₂ ⟧
+      P  ⇒⁅⧼ C₁ ⍮ C₂ ⧽⁆  R
+    ≡⟨ “Total correctness” ⟩
+      ⟦ C₁ ⍮ C₂ ⟧ ⦇ sat P ⦈ ⊆ sat R  ∧  sat P ⊆ Dom ⟦ C₁ ⍮ C₂ ⟧
+    ≡⟨ “Semantics of ⍮” ⟩  
+      ( ⟦ C₁ ⟧ ⨾ ⟦ C₂ ⟧ ) ⦇ sat P ⦈ ⊆ sat R ∧ sat P ⊆ Dom (⟦ C₁ ⟧ ⨾ ⟦ C₂ ⟧)
+    ≡⟨ “Relational image under ⨾” ⟩
+      ⟦ C₂ ⟧ ⦇ (⟦ C₁ ⟧ ⦇ sat P ⦈) ⦈   ⊆ sat R ∧ sat P ⊆ Dom (⟦ C₁ ⟧ ⨾ ⟦ C₂ ⟧)
+    ⇐⟨ Antitonicity with “Monotonicity of ⦇ ⦈” with assumption (1)⟩
+      ⟦ C₂ ⟧ ⦇ sat Q ⦈ ⊆ sat R ∧ sat P ⊆ Dom (⟦ C₁ ⟧ ⨾ ⟦ C₂ ⟧)
+    ⇐⟨?⟩
+      ⟦ C₂ ⟧ ⦇ sat Q ⦈ ⊆ sat R  ∧  sat Q ⊆ Dom ⟦ C₂ ⟧
+    ≡⟨ Assumption (2) ⟩ 
+      true
+
+Derived inference rule “Conditional tot. corr.”:
+
+      `B ∧′ P ⇒⁅⧼ C₁ ⧽⁆ Q`,   `¬′ B ∧′ P ⇒⁅⧼ C₂ ⧽⁆ Q`
+    ⊦————————————————————————————————————————————
+        `P ⇒⁅⧼ if B then C₁ else C₂ fi ⧽⁆ Q`
+
+Proof:
+  Assuming (1) `B ∧′ P ⇒⁅⧼ C₁ ⧽⁆ Q` and using with “Total correctness” , 
+           (2) `¬′ B ∧′ P ⇒⁅⧼ C₂ ⧽⁆ Q` and using with “Total correctness” :
+      P ⇒⁅⧼ if B then C₁ else C₂ fi ⧽⁆ Q
+    ≡⟨ “Total correctness” ⟩
+      ⟦ if B then C₁ else C₂ fi ⟧ ⦇ sat P ⦈ ⊆ sat Q  ∧  sat P ⊆ Dom ⟦ if B then C₁ else C₂ fi ⟧
+    ≡⟨ “Semantics of `if`” ⟩  
+      ( (sat B ◁ ⟦ C₁ ⟧) ∪ (sat B ⩤ ⟦ C₂ ⟧) ) ⦇ sat P ⦈ ⊆ sat Q  ∧  sat P ⊆ Dom ((sat B ◁ ⟦ C₁ ⟧) ∪ (sat B ⩤ ⟦ C₂ ⟧))
+    ≡⟨ ? ⟩
+      ⟦ C₂ ⟧ ⦇ sat (¬′ B ∧′ P) ⦈ ⊆ sat Q ∧ sat (¬′ B ∧′ P) ⊆ Dom ⟦ C₂ ⟧
+    ≡⟨ “Total correctness” ⟩ 
+      ¬′ B ∧′ P ⇒⁅⧼ C₂ ⧽⁆ Q
+    ≡⟨ Assumption (2) ⟩  
+      true
+
+Theorem “Deterministic total correctness”:
+  (∀ c : Cmd • univalent ⟦ c ⟧) ⇒
+  ((P ⇒⁅⧼ C ⧽⁆ Q)   ≡   sat P ⊆ Dom (⟦ C ⟧ ▷ sat Q))
+Proof:
+  Assuming (A)`(∀ c : Cmd • univalent ⟦ c ⟧)`:
+      sat P ⊆ Dom (⟦ C ⟧ ▷ sat Q)
+    =⟨ “Bounded domain”⟩ 
+      id (sat P) ⊆ (⟦ C ⟧ ▷ sat Q) ⨾ (⟦ C ⟧ ▷ sat Q) ˘
+    =⟨ “Converse of ▷”⟩ 
+      id (sat P) ⊆ (⟦ C ⟧ ▷ sat Q) ⨾ (sat Q ◁ ⟦ C ⟧ ˘) 
+    =⟨ “Domain restriction via ⨾”, “Range restriction via ⨾”⟩ 
+      id (sat P) ⊆ ⟦ C ⟧ ⨾ id (sat Q) ⨾ id(sat Q) ⨾ ⟦ C ⟧ ˘
+    =⟨“Idempotency of `id`”⟩ 
+      id (sat P) ⊆ ⟦ C ⟧ ⨾ id (sat Q) ⨾ ⟦ C ⟧ ˘
+    =⟨“Domain- and range-bounded univalent” with Assumption (A)⟩ 
+       id (sat P) ⊆ ⟦ C ⟧ ⨾ ⟦ C ⟧ ˘ ∧ id (sat P) ⨾ (⟦ C ⟧ ⨾ id (sat Q)) = id (sat P) ⨾ ⟦ C ⟧
+    =⟨ “Bounded domain”⟩ 
+       sat P ⊆ Dom ⟦ C ⟧ ∧ id (sat P) ⨾ ⟦ C ⟧ ⨾ id (sat Q) = id (sat P) ⨾ ⟦ C ⟧
+    =⟨ “Bounded range”⟩ 
+       sat P ⊆ Dom ⟦ C ⟧ ∧ Ran(id (sat P) ⨾ ⟦ C ⟧) ⊆ sat Q
+    =⟨ “Range of ⨾”, “Range of `id`”, “Range of ◁”⟩ 
+       sat P ⊆ Dom ⟦ C ⟧ ∧ ⟦ C ⟧ ⦇ sat P ⦈ ⊆ sat Q
+    =⟨ “Total correctness” ⟩
+       (P ⇒⁅⧼ C ⧽⁆ Q)
+
    
