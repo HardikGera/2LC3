@@ -442,4 +442,101 @@ Proof:
     ( m = 0) ∧ (n = m₀ + n₀)
   ⇒⟨“Weakening”⟩
     n = m₀ + n₀
+
+
+
+11.2
+
+Theorem “Membership in ‥”:  i ∈ m ‥ n  ≡  m ≤ i ≤ n
+Proof:
+    i ∈ m ‥ n
+  =⟨ “Definition of ‥” ⟩
+    i ∈ { i ❙ m ≤ i ≤ n }
+  =⟨ “Simple membership” ⟩ 
+    m ≤ i ≤ n
+
+Theorem “Membership in 0 ‥”:  i ∈ 0 ‥ n  ≡  i ≤ n
+Proof:
+    i ∈ 0 ‥ n
+  =⟨ “Definition of ‥” ⟩
+    i ∈ { i ❙ 0 ≤ i ≤ n }
+  =⟨ “Simple membership” ⟩
+    0 ≤ i ≤ n
+  =⟨ “Reflexivity of ≡” ⟩
+    0 ≤ i ∧ i ≤ n
+  =⟨ “Zero is least element”⟩
+    true ∧ i ≤ n
+  =⟨ “Identity of ∧”⟩
+    i ≤ n
+
+Theorem “Sorting 0′”:
+    xs₀ = xs ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟
+  ⇒⁅ while true do
+        xs := xs ⊕ { ⟨ 0, 42 ⟩ }
+      od
+    ⁆
+    xs ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟  ∧  sorted xs
+      ∧ (∃ f ❙ f ∈ (0 ‥ k) ⤖ (0 ‥ k) • xs = f ⨾ xs₀)
+Proof:
+    xs₀ = xs ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟
+  ⇒⟨ “Right-zero of ⇒” ⟩
+    true                        ╍╍╍ Invariant
+  ⇒⁅ while true do
+        xs := xs ⊕ { ⟨ 0, 42 ⟩ }
+      od
+    ⁆ ⟨ “While” with subproof:
+            true ∧ true
+          =⟨ “Identity of ∧” ⟩
+            true
+          ⇒⁅ xs := xs ⊕ { ⟨ 0, 42 ⟩ } ⁆ ⟨ “Assignment” with substitution ⟩
+            true
+    ⟩
+    ¬ true ∧ true
+  =⟨ “Definition of `false`” ⟩
+    false ∧ true
+  =⟨ “Identity of ∧” ⟩
+    false
+  ⇒⟨ “ex falso quodlibet” ⟩
+    xs ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟  ∧  sorted xs
+      ∧ (∃ f ❙ f ∈ (0 ‥ k) ⤖ (0 ‥ k) • xs = f ⨾ xs₀)
+
+
+Theorem “Array swap”:
+       i ≤ k ≥ j  ∧  xs = xs₀ ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟
+    ⇒⁅ z := xs @ i ⍮
+       xs := xs ⊕ { ⟨ i, xs @ j ⟩ } ⍮
+       xs := xs ⊕ { ⟨ j, z ⟩ }
+     ⁆
+      xs = xs₀ ⊕ { ⟨ i , xs₀ @ j ⟩, ⟨ j , xs₀ @ i ⟩ }
+Proof:
+      xs = xs₀ ⊕ { ⟨ i , xs₀ @ j ⟩, ⟨ j , xs₀ @ i ⟩ }
+  ⁅ xs := xs ⊕ { ⟨ j, z ⟩ } ⁆⇐ ⟨ “Assignment” with substitution ⟩
+      xs ⊕ { ⟨ j, z ⟩ } = xs₀ ⊕ { ⟨ i , xs₀ @ j ⟩, ⟨ j , xs₀ @ i ⟩ }
+  ⁅ xs := xs ⊕ { ⟨ i, xs @ j ⟩ } ⁆⇐ ⟨ “Assignment” with substitution ⟩
+      (xs  ⊕ { ⟨ i, xs @ j ⟩ }) ⊕ { ⟨ j, z ⟩ } = xs₀ ⊕ { ⟨ i , xs₀ @ j ⟩, ⟨ j , xs₀ @ i ⟩ }
+  ⁅ z := xs @ i ⁆⇐ ⟨ “Assignment” with substitution ⟩
+      (xs  ⊕ { ⟨ i, xs @ j ⟩ }) ⊕ { ⟨ j, xs @ i ⟩ } = xs₀ ⊕ { ⟨ i , xs₀ @ j ⟩, ⟨ j , xs₀ @ i ⟩ }
+  ⇐⟨ Subproof:
+      Assuming (1) `i ≤ k ≥ j  ∧  xs = xs₀ ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟`:
+        By cases: `i = j`, `¬ (i = j)`
+          Completeness: By “LEM”
+          Case `i = j`:
+              (xs  ⊕ { ⟨ i, xs @ j ⟩ }) ⊕ { ⟨ j, xs @ i ⟩ }
+            =⟨ Assumption `i = j` ⟩
+              (xs  ⊕ { ⟨ i, xs @ i ⟩ }) ⊕ { ⟨ i, xs @ i ⟩ }
+            =⟨ “Repeated ⊕”, assumption (1) ⟩
+              xs₀ ⊕ { ⟨ i , xs₀ @ i ⟩ }
+            =⟨ “Idempotency of ∨” ⟩
+              xs₀ ⊕ { ⟨ i , xs₀ @ i ⟩, ⟨ i , xs₀ @ i ⟩ }
+            =⟨ Assumption `i = j` ⟩
+              xs₀ ⊕ { ⟨ i , xs₀ @ j ⟩, ⟨ j , xs₀ @ i ⟩ }
+          Case `¬ (i = j)`:
+              (xs  ⊕ { ⟨ i, xs @ j ⟩ }) ⊕ { ⟨ j, xs @ i ⟩ }
+            =⟨ “Associativity of ⊕” ⟩
+              xs  ⊕ ({ ⟨ i, xs @ j ⟩ } ⊕ { ⟨ j, xs @ i ⟩ })
+            =⟨ “Singletons ⊕” with assumption `¬ (i = j)`, assumption (1) ⟩
+              xs₀ ⊕ { ⟨ i , xs₀ @ j ⟩, ⟨ j , xs₀ @ i ⟩ }
+    ⟩
+    i ≤ k ≥ j  ∧  xs = xs₀ ∈ (0 ‥ k) ⇴ ⌞ ℕ ⌟
+
    
