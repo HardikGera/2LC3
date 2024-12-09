@@ -322,4 +322,124 @@ Proof:
         ∧ (⟦ φ ⟧ α) t′ )   
       =⟨“Semantics of V”⟩
         ⟦ FALSE V φ ⟧ α t
+
+
+While loop
+
+Theorem “Adding₁”:
+      n = n₀
+    ⇒⁅  i := 0 ⍮
+        while i ≠ m
+          do
+            i := i + 1 ⍮
+            n := n + 1
+          od
+      ⁆
+      n = m + n₀
+Proof:
+    n = n₀
+  ≡⟨“Identity of +”⟩
+    n = n₀ + 0
+  ⇒⁅ i := 0 ⁆ ⟨“Assignment” with Substitution⟩
+    n = i + n₀ 
+  
+
+
+  ⇒⁅ 
+        while i ≠ m
+          do
+            i := i + 1 ⍮
+            n := n + 1
+          od
+      ⁆
+   ⟨ “While” with subproof:
+         ( i ≠ m ) ∧ (n = i + n₀ )
+       ⇒⟨“Weakening”⟩
+         n = i + n₀  
+       ≡⟨“Cancellation of +”⟩
+         n + 1 = i + n₀ + 1
+       ⇒⁅ i := i + 1 ⁆ ⟨“Assignment” with Substitution⟩ 
+         n + 1 = i + n₀ 
+       ⇒⁅ n := n + 1 ⁆ ⟨“Assignment” with Substitution⟩
+         n = i + n₀
+    ⟩
+
+    ¬ ( i ≠ m) ∧ (n = n₀ + i )
+  ≡⟨“Definition of ≠”⟩
+    ¬ ¬ ( i = m) ∧ (n = n₀ + i )
+  ≡⟨“Double negation”⟩
+    (i = m) ∧ (n = n₀ + i )
+  ≡⟨ Substitution ⟩
+    (i = m) ∧ (n = n₀ + z ) [z ≔ i]
+  ≡⟨ “Replacement” ⟩ 
+    (i = m) ∧ (n = n₀ + z ) [z ≔ m]
+  ≡⟨ Substitution ⟩
+    (i = m) ∧ (n = n₀ + m )
+  ⇒⟨ “Weakening”⟩
+    n = m + n₀
+
+
+Theorem “Adding₂”:
+      m = m₀ ∧ n = n₀
+    ⇒⁅  while m ≠ 0
+          do
+            m := m - 1 ⍮
+            n := n + 1
+          od
+      ⁆
+      n = m₀ + n₀
+Proof:
+    m = m₀ ∧ n = n₀
+  =⟨ “Cancellation of +” ⟩
+    m + n = m₀ + n ∧ n = n₀
+  =⟨ Substitution  ⟩
+    (m + n = m₀ + z) [z ≔ n]  ∧ n = n₀ 
+  =⟨ “Replacement” ⟩
+    (m + n = m₀ + z) [z ≔ n₀]  ∧ n = n₀  
+  =⟨ Substitution ⟩  
+    (m + n = m₀ + n₀) ∧   n = n₀  
+  ⇒⟨ “Weakening” ⟩ 
+    m + n = m₀ + n₀ 
+  ⇒⁅  while m ≠ 0
+          do
+            m := m - 1 ⍮
+            n := n + 1
+          od
+      ⁆
+   ⟨“While” with subproof:
+        m ≠ 0 ∧ (m + n = m₀ + n₀)
+      ⇒⟨ “Weakening”⟩ 
+        m + n = m₀ + n₀
+      =⟨“Identity of +”⟩
+        m + n + 0 = m₀ + n₀  
+      =⟨ Fact `1 - 1 = 0` ⟩
+        m + n + ( 1 - 1 ) = m₀ + n₀ 
+      =⟨ “Subtraction” ⟩  
+        m + n + 1 + ( - 1 ) = m₀ + n₀
+      =⟨ “Symmetry of +”⟩
+        m + (- 1) + n + 1 = m₀ + n₀
+      =⟨ “Subtraction”⟩
+        m - 1 + n + 1 = m₀ + n₀
+      ⇒⁅ m := m - 1 ⁆⟨ “Assignment” with Substitution⟩ 
+        m + n + 1 = m₀ + n₀
+      ⇒⁅ n := n + 1 ⁆⟨ “Assignment” with Substitution⟩ 
+        m + n = m₀ + n₀
+    ⟩
+
+
+    ¬ ( m ≠ 0) ∧ (m + n = m₀ + n₀)
+  ≡⟨“Definition of ≠”⟩
+    ¬ ¬( m = 0) ∧ (m + n = m₀ + n₀)
+  ≡⟨“Double negation”⟩ 
+    ( m = 0) ∧ (m + n = m₀ + n₀)
+  ≡⟨ Substitution⟩
+    ( m = 0) ∧ (i + n = m₀ + n₀)[ i ≔ m]
+  ≡⟨ “Replacement”⟩
+    ( m = 0) ∧ (i + n = m₀ + n₀)[ i ≔ 0]
+  ≡⟨ Substitution⟩
+    ( m = 0) ∧ (0 + n = m₀ + n₀)
+  ≡⟨“Identity of +”⟩
+    ( m = 0) ∧ (n = m₀ + n₀)
+  ⇒⟨“Weakening”⟩
+    n = m₀ + n₀
    
