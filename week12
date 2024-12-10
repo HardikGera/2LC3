@@ -1699,3 +1699,69 @@ Proof:
           f ˘ ⨾ f ⨾ g ╍╍╍ why does order matter here? ask 
         ⊆⟨ “Monotonicity of ⨾” with Assumption `mapping f`, “Identity of ⨾”⟩  
           g
+
+9.5
+
+Theorem “Weakening for ∩”: Q ∩ R ⊆ Q  ∧  Q ∩ R ⊆ R
+Proof:
+    Q ∩ R ⊆ Q ∧ Q ∩ R ⊆ R
+  =⟨ “Characterisation of ∩” ⟩
+    Q ∩ R ⊆ Q ∩ R
+  =⟨ “Reflexivity of ⊆” ⟩
+    true
+
+Corollary “Symmetry of ∩”: Q ∩ R = R ∩ Q
+Proof:
+  Using “Mutual inclusion”:
+    Subproof for `Q ∩ R ⊆ R ∩ Q`:
+      By “Symmetry of ∩”
+    Subproof for `R ∩ Q ⊆ Q ∩ R`:
+      By “Symmetry of ∩”
+
+Theorem “Inclusion via ∩”: Q ⊆ R ≡ Q ∩ R = Q
+Proof:
+    Q ∩ R = Q
+  =⟨ “Mutual inclusion” ⟩
+    Q ∩ R ⊆ Q ∧ Q ⊆ Q ∩ R
+  =⟨ “Weakening for ∩”, “Identity of ∧” ⟩
+    Q ⊆ Q ∩ R
+  =⟨ “Characterisation of ∩” ⟩
+    Q ⊆ Q ∧ Q ⊆ R
+  =⟨ “Reflexivity of ⊆”, “Identity of ∧” ⟩
+    Q ⊆ R
+
+Theorem “Converse of ∩”: (R ∩ S) ˘ ⊆ R ˘ ∩ S ˘
+Proof:
+    (R ∩ S) ˘ ⊆ R ˘ ∩ S ˘
+  =⟨ “Characterisation of ∩” ⟩
+    (R ∩ S) ˘ ⊆ R ˘ ∧ (R ∩ S) ˘ ⊆ S ˘
+  =⟨ “Isotonicity of ˘” ⟩
+    (R ∩ S) ⊆ R ∧ (R ∩ S) ⊆ S
+  =⟨ “Weakening for ∩” ⟩
+    true
+
+Theorem “Converse of ∩”:     (R ∩ S) ˘  =  R ˘ ∩ S ˘
+Proof:
+  Using “Indirect Relation Equality from below”:
+    For any `Q`:
+        Q ⊆ (R ∩ S) ˘ ≡ Q ⊆ R ˘ ∩ S ˘
+      ≡⟨ “Isotonicity of ˘” ⟩
+        Q ˘ ⊆ (R ∩ S) ˘ ˘ ≡ Q ⊆ R ˘ ∩ S ˘
+      ≡⟨ “Self-inverse of ˘” ⟩
+        Q ˘ ⊆ (R ∩ S) ≡ Q ⊆ R ˘ ∩ S ˘
+      ≡⟨ “Characterisation of ∩” ⟩
+        Q ˘ ⊆ R ∧ Q ˘ ⊆ S ≡ Q ⊆ R ˘ ∩ S ˘
+      ≡⟨ “˘ connection” ⟩
+        Q ⊆ R ˘ ∧ Q ⊆ S ˘ ≡ Q ⊆ R ˘ ∩ S ˘
+      ≡⟨ “Characterisation of ∩”, “Reflexivity of ≡” ⟩
+        true
+
+Theorem “Antisymmetry of converse”:  antisymmetric R  ≡  antisymmetric (R ˘)
+Proof:
+    antisymmetric R
+  ≡⟨ “Definition of antisymmetry” ⟩
+    R ∩ R ˘ ⊆ Id
+  ≡⟨ “Self-inverse of ˘” ⟩
+    R ˘ ∩ R ˘ ˘ ⊆ Id
+  ≡⟨ “Definition of antisymmetry” ⟩
+    antisymmetric (R ˘)
