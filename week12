@@ -2162,3 +2162,204 @@ out in
 T    S  Atleast 1
 U    I  Atmost 1
 M    B  exactly 1
+
+
+
+7.3
+
+Theorem “Non-empty-sequence decomposition”:
+    xs ≠ 𝜖  ⇒  xs = head xs ◃ tail xs
+Proof:
+  By induction on `xs : Seq A`:
+    Base case:
+        𝜖 ≠ 𝜖 ⇒ 𝜖 = head 𝜖 ◃ tail 𝜖
+      ≡⟨ “Irreflexivity of ≠” ⟩
+        false ⇒ 𝜖 = head 𝜖 ◃ tail 𝜖
+      ≡⟨ “ex falso quodlibet” ⟩
+        true
+    Induction step:
+      For any `x`:
+          (x ◃ xs) ≠ 𝜖 ⇒ (x ◃ xs) = head (x ◃ xs) ◃ tail (x ◃ xs)
+        ≡⟨ “Cons is not empty” ⟩
+          true ⇒ (x ◃ xs) = head (x ◃ xs) ◃ tail (x ◃ xs)
+        ≡⟨ “Left-identity of ⇒” ⟩
+          (x ◃ xs) = head (x ◃ xs) ◃ tail (x ◃ xs)
+        ≡⟨ “Definition of `head`”, “Definition of `tail`” ⟩
+          (x ◃ xs) = x ◃ xs
+        ≡⟨ “Reflexivity of =” ⟩
+          true
+
+
+Theorem “Initialisation for `elem`”:
+      true ╍╍╍ Precondition
+    ⇒⁅ xs := xs₀ ⍮
+       b := false ⁆
+      ∃ ys • ys ⌢ xs = xs₀ ∧ (b ≡ x ∈ ys)
+Proof:
+    true
+  ≡⟨ “Idempotency of ∧” ⟩
+    true ∧ true
+  ≡⟨ “Left-identity of ⌢”, “Reflexivity of =” ⟩
+    𝜖 ⌢ xs₀ = xs₀ ∧ true
+  ≡⟨ “Reflexivity of ≡” ⟩
+    𝜖 ⌢ xs₀ = xs₀ ∧ (false ≡ false)
+  ≡⟨ “Membership in 𝜖” ⟩
+    𝜖 ⌢ xs₀ = xs₀ ∧ (false ≡ x ∈ 𝜖)
+  ≡⟨ Substitution ⟩
+    (ys ⌢ xs₀ = xs₀ ∧ (false ≡ x ∈ ys))[ys ≔ 𝜖]
+  ⇒⟨ “∃-Introduction” ⟩
+    ∃ ys • ys ⌢ xs₀ = xs₀ ∧ (false ≡ x ∈ ys)
+  ⇒⁅ xs := xs₀ ⁆ ⟨ “Assignment” with substitution ⟩
+    ∃ ys • ys ⌢ xs = xs₀ ∧ (false ≡ x ∈ ys)
+  ⇒⁅ b := false ⁆ ⟨ “Assignment” with substitution ⟩
+    ∃ ys • ys ⌢ xs = xs₀ ∧ (b ≡ x ∈ ys)
+
+Theorem “Postcondition for `elem`”:
+      ¬ (xs ≠ 𝜖) ∧ (∃ ys • ys ⌢ xs = xs₀ ∧ (b ≡ x ∈ ys)) ╍╍╍ negation of while
+    ⇒ (b ≡ x ∈ xs₀)
+Proof:
+  Assuming (1) `¬ (xs ≠ 𝜖)` and using with “Negation of ≠”, ╍╍╍ assumption1 says
+           (2) `(∃ ys • ys ⌢ xs = xs₀ ∧ (b ≡ x ∈ ys))`:
+    Assuming witness `ys` satisfying (3) `ys ⌢ xs = xs₀ ∧ (b ≡ x ∈ ys)`:
+        x ∈ xs₀
+      ≡⟨ Assumption (3) ⟩
+        x ∈ ys ⌢ xs
+      ≡⟨ Assumption (1) ⟩
+        x ∈ ys ⌢ 𝜖
+      ≡⟨ “Right-identity of ⌢” ⟩
+        x ∈ ys
+      ≡⟨ Assumption (3) ⟩
+        b
+
+Lemma “snoc-cat”: xs ▹ y ⌢ ys = xs ⌢ y ◃ ys
+Proof:
+  By induction on `xs : Seq A`:
+    Base case:
+        𝜖 ▹ y ⌢ ys
+      =⟨ “Definition of ▹ for 𝜖” ⟩
+        (y ◃ 𝜖) ⌢ ys
+      =⟨ “Mutual associativity of ◃ with ⌢”, “Left-identity of ⌢”⟩ 
+        𝜖 ⌢ y ◃ ys
+    Induction step:
+      For any `x`:
+          (x ◃ xs) ▹ y ⌢ ys
+        =⟨ “Definition of ▹ for ◃”, “Mutual associativity of ◃ with ⌢”⟩
+          x ◃ (xs ▹ y ⌢ ys)
+        =⟨ Induction hypothesis ⟩
+          x ◃ (xs ⌢ y ◃ ys)
+        =⟨ “Mutual associativity of ◃ with ⌢” ⟩
+          (x ◃ xs) ⌢ y ◃ ys
+
+Theorem “Invariant for `elem`”:
+      xs ≠ 𝜖 ∧ (∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us))
+    ⇒⁅
+          if head xs = x
+          then b := true
+          else skip
+          fi ⍮
+          xs := tail xs
+      ⁆
+      (∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us))
+Proof:
+    xs ≠ 𝜖 ∧ (∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us))
+  ⇒⁅
+          if head xs = x
+          then b := true
+          else skip
+          fi
+    ⁆ ⟨ Subproof:
+          Using “Conditional”:
+            Subproof:
+                head xs = x ∧ xs ≠ 𝜖 ∧ (∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us))
+              ⇒⟨ Subproof:
+                   Assuming (1) `head xs = x`,
+                            (2) `xs ≠ 𝜖`,
+                            (3) `(∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us))`:
+                     Assuming witness `us` satisfying
+                       (4) `us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us)` by Assumption (3):
+                         ∃ us • us ⌢ tail xs = xs₀ ∧ (x ∈ us)
+                       ⇐⟨ “∃-Introduction” ⟩
+                         (us ⌢ tail xs = xs₀ ∧ (x ∈ us))[us ≔ us]
+                       ≡⟨ Substitution ⟩
+                         us ▹ head xs ⌢ tail xs = xs₀ ∧ (x ∈ us)
+                       ≡⟨ Assumption (1) ⟩
+                         us ▹ head xs ⌢ tail xs = xs₀ ∧ (x ∈ (us))
+                       ≡⟨ “Membership in ▹” ⟩
+                         us ▹ head xs ⌢ tail xs = xs₀ ∧ (x ∈ us)
+                       ≡⟨ “Reflexivity of =”, “Zero of ∨”, “Identity of ∧” ⟩ 
+                         us ▹ head xs ⌢ tail xs = xs₀
+                       ≡⟨ “snoc-cat” ⟩
+                         us ⌢ head xs ◃ tail xs = xs₀
+                       ≡⟨ “Non-empty-sequence decomposition” with Assumption (2) ⟩
+                         us ⌢ xs = xs₀
+                       ≡⟨ Assumption (4) ⟩
+                         true
+                ⟩
+                ∃ us • us ⌢ tail xs = xs₀ ∧ (x ∈ us)
+              ≡⟨ “Identity of ≡” ⟩
+                ∃ us • us ⌢ tail xs = xs₀ ∧ (true ≡ x ∈ us)
+              ⇒⁅ b := true ⁆ ⟨ “Assignment” with Substitution ⟩
+                (∃ us • us ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us))
+            Subproof:
+                ¬ (head xs = x) ∧ xs ≠ 𝜖 ∧ (∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us))
+              ⇒⟨ Subproof:
+                    Assuming (1) `¬ (head xs = x)`,
+                             (2) `xs ≠ 𝜖`,
+                             (3) `∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us)`:
+                       
+                        Assuming witness `us` satisfying
+                          (4) `us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us)` by Assumption (3):
+                            ∃ us • us ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us)
+                          ⇐⟨ “∃-Introduction” ⟩
+                            (us ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us))[us ≔ us]
+                          ≡⟨ Substitution ⟩
+                            us ▹ head xs ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us)
+                          ≡⟨ “Membership in ▹” ⟩
+                            us ▹ head xs ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us)
+                          ≡⟨ Assumption (1), “Identity of ∨” ⟩
+                            us ▹ head xs ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us)
+                          ≡⟨ “snoc-cat” ⟩
+                            us ⌢ head xs ◃ tail xs = xs₀ ∧ (b ≡ x ∈ us)
+                          ≡⟨ “Non-empty-sequence decomposition” with Assumption (2)⟩
+                            us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us)
+                          ≡⟨ Assumption (4) ⟩
+                            true
+                 
+                ⟩
+                (∃ us • us ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us))
+              ⇒⁅ skip ⁆ ⟨ “skip” ⟩
+                (∃ us • us ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us))
+    ⟩
+    (∃ us • us ⌢ tail xs = xs₀ ∧ (b ≡ x ∈ us))
+  ⇒⁅ xs := tail xs ⁆ ⟨ “Assignment” with Substitution ⟩
+    (∃ us • us ⌢ xs = xs₀ ∧ (b ≡ x ∈ us))
+
+Fact (CondCorr1):
+      true              ╍╍╍ Precondition
+    ⇒⁅
+        if m ≤ 10
+        then skip
+        else m := 0
+        fi
+      ⁆
+      m ≤ 10           ╍╍╍ Postcondition
+Proof:
+    true               ╍╍╍ Precondition
+  ⇒⁅ if m ≤ 10 then skip else m := 0 fi ⁆ ⟨ Subproof:
+      Using “Conditional”:
+        Subproof:  ╍╍╍ (subproof goal is obvious from calculation)
+            true ∧ m ≤ 10           ╍╍╍ Precondition for `then`
+          ≡  ⟨ “Identity of ∧” ⟩
+            m ≤ 10
+          ⇒⁅ skip ⁆  ⟨ “skip” ⟩
+            m ≤ 10                  ╍╍╍ Postcondition
+        Subproof:  ╍╍╍ (subproof goal is obvious from calculation)
+            true ∧ ¬ (m ≤ 10)       ╍╍╍ Precondition for `else`
+          ⇒  ⟨ “Weakening” ⟩
+            true
+          ≡  ⟨ Fact `0 ≤ 10` ⟩
+            0 ≤ 10
+          ⇒⁅ m := 0 ⁆  ⟨ “Assignment” with substitution ⟩
+            m ≤ 10                  ╍╍╍ Postcondition
+    ⟩
+    m ≤ 10             ╍╍╍ Postcondition
