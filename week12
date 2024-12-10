@@ -2158,3 +2158,7 @@ Proof:
       true
 
 
+out in   
+T    S  Atleast 1
+U    I  Atmost 1
+M    B  exactly 1
