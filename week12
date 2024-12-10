@@ -1785,3 +1785,98 @@ Proof:
     R ˘ ∩ R ˘ ˘ ⊆ Id
   ≡⟨ “Definition of antisymmetry” ⟩
     antisymmetric (R ˘)
+
+9.6
+
+Theorem “Hesitation”: R ⊆ R ⨾ R ˘ ⨾ R
+Proof:
+    R
+  =⟨ “Idempotency of ∩” ⟩
+    R ∩ R
+  =⟨ “Identity of ⨾” ⟩
+    R ⨾ 𝕀 ∩ R
+  ⊆⟨ “Modal rule” ⟩
+    R ⨾ (𝕀 ∩ R ˘ ⨾ R)
+  ⊆⟨ “Monotonicity of ⨾” with “Weakening for ∩” ⟩
+    R ⨾ R ˘ ⨾ R
+
+Theorem “PER factoring”:
+    symmetric Q ⇒ transitive Q ⇒  Q ⨾ R ∩ Q = Q ⨾ (R ∩ Q)
+Proof:
+  Assuming `symmetric Q` and using with “Definition of symmetry”,
+           `transitive Q` and using with “Definition of transitivity”:
+      Q ⨾ (R ∩ Q)
+    ⊆⟨ “Sub-distributivity of ⨾ over ∩” ⟩
+      Q ⨾ R ∩ Q ⨾ Q
+    ⊆⟨ Monotonicity with Assumption `transitive Q` ⟩ 
+      Q ⨾ R ∩ Q
+    ⊆⟨ “Modal rule” ⟩
+      Q ⨾ (R ∩ Q ˘ ⨾ Q)
+    ⊆⟨ Monotonicity with Assumption `symmetric Q` ⟩
+      Q ⨾ (R ∩ Q ⨾ Q)
+    ⊆⟨ Monotonicity with Assumption `transitive Q` ⟩
+      Q ⨾ (R ∩ Q)
+
+Theorem “Reflexive implies total”:
+    reflexive R ⇒ total R
+Proof:
+    reflexive R
+  =⟨ “Definition of reflexivity” ⟩
+    𝕀 ⊆ R
+  =⟨ “Monotonicity of ˘” with “Definition of ⇒ via ∧” ⟩
+    𝕀 ⊆ R ∧ 𝕀 ˘ ⊆ R ˘
+  ⇒⟨ “Monotonicity of ⨾” with “Shunting” ⟩
+    𝕀 ⨾ 𝕀 ˘ ⊆ R ⨾ R ˘
+  =⟨ “Converse of 𝕀”, “Identity of ⨾” ⟩
+    𝕀 ⊆ R ⨾ R ˘
+  =⟨ “Definition of totality” ⟩
+    total R
+
+Theorem “Idempotency from symmetric and transitive”:
+    symmetric R ⇒ transitive R ⇒ idempotent R
+Proof:
+  Assuming `symmetric R` and using with “Definition of symmetry”,
+           `transitive R` and using with “Definition of transitivity”:
+    Using “Definition of idempotency”:
+      Subproof for `R ⨾ R = R`:
+          R ⨾ R
+        ⊆⟨ Assumption `transitive R` ⟩
+          R
+        ⊆⟨ “Hesitation” ⟩
+          R ⨾ (R ˘ ⨾ R)
+        ⊆⟨ Monotonicity with Assumption `symmetric R` ⟩
+          R ⨾ (R ⨾ R)
+        ⊆⟨ Monotonicity with Assumption `transitive R` ⟩
+          R ⨾ R
+
+Theorem “Right-distributivity of ⨾ with univalent over ∩”:
+    univalent F  ⇒  F ⨾ (R ∩ S) = F ⨾ R ∩ F ⨾ S
+Proof:
+  Assuming `univalent F` and using with “Definition of univalence”:
+      F ⨾ (R ∩ S)
+    ⊆⟨ “Sub-distributivity of ⨾ over ∩” ⟩
+      F ⨾ R ∩ (F ⨾ S) ╍╍╍ ⨾ associates to the right
+    ⊆⟨ “Modal rule” ⟩
+      F ⨾ (R ∩ F ˘ ⨾ F ⨾ S)
+    ⊆⟨ Monotonicity with Assumption `univalent F` ⟩
+      F ⨾ (R ∩ 𝕀 ⨾ S)
+    =⟨ “Identity of ⨾” ⟩
+      F ⨾ (R ∩ S)
+
+Theorem “Swapping mapping across ⊆”:
+    mapping F  ⇒  (R ⨾ F ⊆ S  ≡  R ⊆ S ⨾ F ˘)
+Proof:
+  Assuming `mapping F` and using with “Definition of mappings”:
+      R ⨾ F ⊆ S
+    ⇒⟨ “Monotonicity of ⨾” ⟩
+      R ⨾ F ⨾ F ˘ ⊆ S ⨾ F ˘
+    ⇒⟨ Antitonicity with assumption `mapping F` ⟩
+      R ⨾ 𝕀 ⊆ S ⨾ F ˘
+    =⟨ “Identity of ⨾” ⟩
+      R ⊆ S ⨾ F ˘
+    ⇒⟨ “Monotonicity of ⨾” ⟩
+      R ⨾ F ⊆ S ⨾ F ˘ ⨾ F
+    ⇒⟨ Monotonicity with assumption `mapping F` ⟩
+      R ⨾ F ⊆ S ⨾ 𝕀
+    =⟨ “Identity of ⨾” ⟩
+      R ⨾ F ⊆ S
