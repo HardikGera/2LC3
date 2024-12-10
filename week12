@@ -1477,3 +1477,225 @@ Proof:
     x ⦗ (Dom S ⩤ R) ⦘ y ∨ x ⦗ S ⦘ y  
   ≡⟨ “Relationship via ⩤” ⟩
     (¬ (x ∈ Dom S) ∧ x ⦗ R ⦘ y) ∨ x ⦗ S ⦘ y
+
+
+Theorem (14.302) “Relational image”:  y ∈ R ⦇ A ⦈  ≡  (∃ x ❙ x ∈ A • x ⦗ R ⦘ y)
+Proof:
+    y ∈ R ⦇ A ⦈
+  =⟨ “Definition of ⦇_⦈” ⟩
+    y ∈ Ran (A ◁ R)
+  =⟨ “Membership in `Ran`” ⟩
+    ∃ x • x ⦗ A ◁ R ⦘ y
+  =⟨ “Relationship via ◁” ⟩
+    ∃ x • x ∈ A ∧ x ⦗ R ⦘ y
+  =⟨ “Trading for ∃” ⟩
+    ∃ x ❙ x ∈ A • x ⦗ R ⦘ y
+
+9.3
+Theorem “Inverse of ⨾”:
+    S₁ is-inverse-of R₁  ∧  S₂ is-inverse-of R₂
+  ⇒ (S₂ ⨾ S₁) is-inverse-of (R₁ ⨾ R₂)
+Proof:
+  Assuming (1) `S₁ is-inverse-of R₁` and using with “Definition of inverse”,
+           (2) `S₂ is-inverse-of R₂` and using with “Definition of inverse”:
+    Using “Definition of inverse”:
+      Subproof:
+          (S₂ ⨾ S₁) ⨾ (R₁ ⨾ R₂)
+        =⟨ “Associativity of ⨾” ⟩
+          S₂ ⨾ (S₁ ⨾ R₁) ⨾ R₂
+        =⟨ Assumption (1), “Identity of ⨾” ⟩
+          S₂ ⨾ R₂ 
+        =⟨ Assumption (2) ⟩
+          𝕀
+      Subproof:
+          (R₁ ⨾ R₂) ⨾ (S₂ ⨾ S₁)
+        =⟨ “Associativity of ⨾” ⟩
+          R₁ ⨾ (R₂ ⨾ S₂) ⨾ S₁
+        =⟨ Assumption (2) ⟩
+          R₁ ⨾ 𝕀 ⨾ S₁
+        =⟨ “Identity of ⨾”, Assumption (1) ⟩
+          𝕀
+
+
+Theorem “Inverse of 𝕀”:  𝕀 is-inverse-of 𝕀
+Proof:
+    𝕀 is-inverse-of 𝕀
+  ≡⟨ “Definition of inverse” ⟩
+    𝕀 ⨾ 𝕀 = 𝕀 ∧ 𝕀 ⨾ 𝕀 = 𝕀
+  ≡⟨ “Identity of ⨾”, “Reflexivity of =”, “Idempotency of ∧” ⟩
+    true
+
+Theorem “Coreflexivity of ⨾”:
+    coreflexive R ⇒ coreflexive S ⇒ coreflexive (R ⨾ S)
+Proof:
+  Assuming `coreflexive R`, `coreflexive S`:
+      coreflexive (R ⨾ S)
+    =⟨ “Definition of coreflexivity” ⟩
+      (R ⨾ S) ⊆ 𝕀
+    =⟨“Identity of ⨾” ⟩
+      (R ⨾ S) ⊆ 𝕀 ⨾ 𝕀
+    ⇐ ⟨“Monotonicity of ⨾” with “Shunting”⟩
+      R ⊆ 𝕀 ∧ S ⊆ 𝕀
+    =⟨ Assumption `coreflexive R` with “Definition of coreflexivity”⟩ 
+      true ∧ S ⊆ 𝕀
+    =⟨ “Identity of ∧” ⟩
+      S ⊆ 𝕀
+    =⟨ Assumption `coreflexive S` with “Definition of coreflexivity”⟩ 
+      true 
+
+
+9.4
+
+Lemma “Cancellation of ˘”:
+    R ˘ = S ˘  ≡  R = S
+Proof:
+  Using “Mutual implication”:
+    Subproof for `R ˘ = S ˘ ⇒ R = S`:
+      Assuming `R ˘ = S ˘`:
+          R
+        =⟨ “Self-inverse of ˘” ⟩
+          R ˘ ˘
+        =⟨ Assumption `R ˘ = S ˘` ⟩
+          S ˘ ˘
+        =⟨ “Self-inverse of ˘” ⟩
+          S
+    Subproof for `R = S ⇒ R ˘ = S ˘`:
+      Assuming `R = S`:
+          R ˘
+        =⟨ Assumption `R = S` ⟩
+          S ˘
+
+Theorem “Isotonicity of ˘”: R ⊆ S ≡ R ˘ ⊆ S ˘
+Proof:
+    R ⊆ S
+  ⇒⟨ “Monotonicity of ˘” ⟩
+    R ˘ ⊆ S ˘
+  ⇒⟨ “Monotonicity of ˘” ⟩
+    R ˘ ˘ ⊆ S ˘ ˘
+  =⟨ “Self-inverse of ˘” ⟩
+    R ⊆ S
+
+Lemma “Definition of symmetry”:
+    symmetric R ≡ R ˘ = R
+Proof:
+    symmetric R
+  ≡⟨ “Definition of symmetry” ⟩
+    R ˘ ⊆ R
+  ≡⟨ “Idempotency of ∧” ⟩
+    R ˘ ⊆ R ∧ R ˘ ⊆ R
+  ≡⟨ “Isotonicity of ˘” ⟩
+    R ˘ ˘ ⊆ R ˘ ∧ R ˘ ⊆ R
+  ≡⟨ “Self-inverse of ˘” ⟩
+    R ⊆ R ˘ ∧ R ˘ ⊆ R
+  ≡⟨ “Mutual inclusion” ⟩
+    R ˘ = R
+
+Theorem “Reflexivity of converse”:
+    reflexive R ≡ reflexive (R ˘)
+Proof:
+    reflexive R
+  ≡⟨ “Definition of reflexivity” ⟩
+    𝕀 ⊆ R
+  ≡⟨ “Isotonicity of ˘” ⟩
+    𝕀 ˘ ⊆ R ˘
+  ≡⟨ “Converse of 𝕀”, “Definition of reflexivity” ⟩
+    reflexive (R ˘)
+
+Theorem “Symmetry of converse”:
+    symmetric R ≡ symmetric (R ˘)
+Proof:
+    symmetric R
+  ≡⟨ “Definition of symmetry” ⟩
+    R ˘ ⊆ R
+  ≡⟨ “Isotonicity of ˘” ⟩
+    R ˘ ˘ ⊆ R ˘
+  ≡⟨ “Self-inverse of ˘”, “Definition of symmetry” ⟩
+    symmetric (R ˘)
+
+Theorem “𝕀 is mapping”: mapping 􀀅
+Proof:
+  Using “Definition of mappings”:
+    Subproof:
+        univalent 𝕀
+      =⟨ “Definition of univalence” ⟩
+        𝕀 ˘ ⨾ 𝕀 ⊆ 𝕀
+      =⟨ “Converse of 𝕀” ⟩
+        𝕀 ⨾ 𝕀 ⊆ 𝕀
+      =⟨ “Identity of ⨾” ⟩
+        𝕀 ⊆ 𝕀
+      =⟨ “Reflexivity of ⊆” ⟩
+        true
+    Subproof:
+        total 𝕀
+      =⟨ “Definition of totality” ⟩
+         𝕀 ⊆ 𝕀 ⨾ 𝕀 ˘
+      =⟨ “Converse of 𝕀”, “Identity of ⨾”, “Reflexivity of ⊆” ⟩
+        true
+
+Theorem “Composition of mappings”:
+    mapping F ∧ mapping G ⇒ mapping (F ⨾ G)
+Proof:
+  Assuming (F) `mapping F` and using with “Definition of mappings”,
+           (G) `mapping G` and using with “Definition of mappings”:
+    Using “Definition of mappings”:
+      Subproof: ╍╍╍ proof for univalent
+          (F ⨾ G) ˘ ⨾ (F ⨾ G)
+        =⟨ “Converse of ⨾” ⟩
+          (G ˘ ⨾ F ˘) ⨾ (F ⨾ G)
+        ⊆⟨ “Monotonicity of ⨾” with “Monotonicity of ⨾” with Assumption (F)⟩ 
+          G ˘ ⨾ 𝕀 ⨾ G
+        ⊆⟨ “Identity of ⨾”, Assumption (G) ⟩
+          𝕀
+      Subproof: ╍╍╍ proof for total
+          𝕀
+        ⊆⟨ Assumption (F) ⟩
+          F ⨾ F ˘
+        =⟨ “Identity of ⨾” ⟩
+          F ⨾ 𝕀 ⨾ F ˘
+        ⊆⟨ “Monotonicity of ⨾” with “Monotonicity of ⨾” with Assumption (G)⟩ 
+          (F ⨾ G) ⨾ (G ˘ ⨾ F ˘)
+        =⟨ “Converse of ⨾” ⟩
+          (F ⨾ G) ⨾ (F ⨾ G) ˘
+
+Theorem “total in univalent”:
+     total R ⇒ univalent S ⇒ R ⊆ S ⇒ R = S
+Proof:
+  Assuming `total R`, `univalent S`, `R ⊆ S`:
+    Using “Mutual inclusion” with assumption `R ⊆ S`:
+        S
+      =⟨ “Identity of ⨾” ⟩
+        𝕀 ⨾ S
+      ⊆⟨ “Monotonicity of ⨾” with Assumption `total R` with “Definition of totality” ⟩
+        (R ⨾ R ˘) ⨾ S
+      ⊆⟨ “Monotonicity of ⨾” with “Monotonicity of ⨾” with “Monotonicity of ˘” with Assumption `R ⊆ S`⟩
+        (R ⨾ S ˘) ⨾ S
+      ⊆⟨ “Monotonicity of ⨾” with Assumption `univalent S` with “Definition of univalence”⟩
+        R ⨾ 𝕀
+      =⟨ “Identity of ⨾”⟩
+        R
+
+
+Theorem “Inverse of mapping”:
+    mapping f ⇒ g is-inverse-of f ⇒ g = f ˘
+Proof:
+  Assuming `mapping f` and using with “Definition of mappings”,
+           `g is-inverse-of f` and using with “Definition of inverse”:
+    Using “Mutual inclusion”:
+      Subproof:
+          g
+        =⟨ “Identity of ⨾” ⟩
+          g ⨾ 𝕀
+        ⊆⟨ “Monotonicity of ⨾” with Assumption `mapping f` ⟩
+          g ⨾ f ⨾ f ˘
+        =⟨ “Definition of inverse” with Assumption `g is-inverse-of f`⟩ 
+          𝕀 ⨾ f ˘
+        =⟨ “Identity of ⨾” ⟩
+          f ˘
+      Subproof:
+          f ˘
+        =⟨ “Identity of ⨾” ⟩
+          f ˘ ⨾ 𝕀
+        =⟨ Assumption `g is-inverse-of f` ⟩
+          f ˘ ⨾ f ⨾ g ╍╍╍ why does order matter here? ask 
+        ⊆⟨ “Monotonicity of ⨾” with Assumption `mapping f`, “Identity of ⨾”⟩  
+          g
