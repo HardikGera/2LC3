@@ -1880,3 +1880,281 @@ Proof:
       R ⨾ F ⊆ S ⨾ 𝕀
     =⟨ “Identity of ⨾” ⟩
       R ⨾ F ⊆ S
+
+10.1
+
+Theorem “Distributivity of composition with univalent over ∩”:
+   univalent F  ⇒  F ⨾ (R ∩ S) = F ⨾ R ∩ F ⨾ S
+Proof:
+  Assuming `univalent F` and using with “Univalence”:
+    Using “Relation extensionality”:
+      For any `x`, `z`:
+          x ⦗ F ⨾ R ∩ F ⨾ S ⦘ z
+        =⟨ “Relation intersection”, “Relation composition” ⟩
+          (∃ y₁ • x ⦗ F ⦘ y₁ ∧ y₁ ⦗ R ⦘ z) ∧ (∃ y₂ • x ⦗ F ⦘ y₂ ∧
+        =⟨ “Distributivity of ∧ over ∃” ⟩
+          ∃ y₁ • ∃ y₂ • x ⦗ F ⦘ y₁ ∧ y₁ ⦗ R ⦘ z ∧ x ⦗ F ⦘ y₂ ∧ y₂
+        =⟨ Assumption `univalent F`, “Identity of ∧” ⟩
+          ∃ y₁ • ∃ y₂ • (x ⦗ F ⦘ y₁ ∧ x ⦗ F ⦘ y₂ ⇒ y₂ = y₁)
+          ∧ x ⦗ F ⦘ y₁ ⦗ R ⦘ z ∧ x ⦗ F ⦘ y₂ ⦗ S ⦘ z
+        =⟨ ?, “Strong modus ponens” ⟩
+          ∃ y₁ • ∃ y₂ • y₂ = y₁ ∧ x ⦗ F ⦘ y₁ ⦗ R ⦘ z ∧ x ⦗ F ⦘ y₂
+        =⟨ “Trading for ∃” ⟩
+          ∃ y₁ • ∃ y₂ ❙ y₂ = y₁ • x ⦗ F ⦘ y₁ ⦗ R ⦘ z ∧ x ⦗ F ⦘ y₂
+        =⟨ “One-point rule for ∃” ⟩
+          ∃ y₁ • (x ⦗ F ⦘ y₁ ⦗ R ⦘ z ∧ x ⦗ F ⦘ y₂ ⦗ S ⦘ z)[y₂ ≔ y₁]
+        =⟨ Substitution ⟩
+          ∃ y₁ • x ⦗ F ⦘ y₁ ⦗ R ⦘ z ∧ x ⦗ F ⦘ y₁ ⦗ S ⦘ z
+        =⟨ “Idempotency of ∧” ⟩
+          ∃ y₁ • x ⦗ F ⦘ y₁ ∧ y₁ ⦗ R ⦘ z ∧ y₁ ⦗ S ⦘ z
+        =⟨ “Relation intersection” ⟩
+          ∃ y₁ • x ⦗ F ⦘ y₁ ∧ y₁ ⦗ R ∩ S ⦘ z
+        =⟨ “Relation composition” ⟩
+          x ⦗ F ⨾ (R ∩ S) ⦘ z
+
+Theorem “Surjective range restriction”:
+    surjective (R ▷ B)  ≡  surjective R ∧ B = 𝐔
+Proof:
+    surjective (R ▷ B)
+  ≡⟨ “Surjectivity” ⟩
+    ∀ b • (∃ a • a ⦗ R ▷ B ⦘ b)
+  ≡⟨ “Relationship via ▷” ⟩
+    ∀ b • (∃ a • a ⦗ R ⦘ b ∧ b ∈ B)
+  ≡⟨ “Distributivity of ∧ over ∃” ⟩
+    ∀ b • (∃ a • a ⦗ R ⦘ b) ∧ b ∈ B
+  ≡⟨ “Distributivity of ∀ over ∧” ⟩
+    (∀ b • (∃ a • a ⦗ R ⦘ b)) ∧ (∀ b • b ∈ B)
+  ≡⟨ “Surjectivity” ⟩
+    surjective R ∧ (∀ b • b ∈ B)
+  ≡⟨ “Identity of ≡” ⟩
+    surjective R ∧ (∀ b • b ∈ B ≡ true)
+  ≡⟨ “Universal set” ⟩
+    surjective R ∧ (∀ b • b ∈ B ≡ b ∈ 𝐔)
+  ≡⟨ “Set extensionality” ⟩
+    surjective R ∧ B = 𝐔
+
+
+Theorem “@ via relational image”:
+      univalent f  ∧  x ∈ Dom f
+   ⇒  f ⦇ { x } ⦈ = { f @ x }
+Proof:
+  Assuming (1) `univalent f ∧ x ∈ Dom f`:
+    Using “Set extensionality”:
+      For any `y`:
+          y ∈ f ⦇ { x } ⦈
+        ≡⟨ “Relational image” ⟩
+          ∃ z ❙ z ∈ { x } • z ⦗ f ⦘ y
+        ≡⟨ “Singleton set membership” ⟩
+          ∃ z ❙ z = x • z ⦗ f ⦘ y
+        ≡⟨ “One-point rule for ∃”, Substitution ⟩
+          x ⦗ f ⦘ y
+        ≡⟨ “Partial-function application” with Assumption (1) ⟩
+          y = f @ x
+        ≡⟨ “Singleton set membership” ⟩
+          y ∈ { f @ x }
+
+
+Theorem “Membership in domain of ⨾”:
+     x ∈ Dom (R ⨾ S)
+  ≡  x ∈ Dom R  ∧  (∃ y ❙ x ⦗ R ⦘ y • y ∈ Dom S)
+Proof:
+     x ∈ Dom (R ⨾ S)
+  ≡⟨ “Membership in `Dom`” ⟩
+     ∃ z • x ⦗ R ⨾ S ⦘ z
+  ≡⟨ “Relation composition” ⟩
+     ∃ z • ∃ y • x ⦗ R ⦘ y ∧ y ⦗ S ⦘ z
+  ≡⟨ “Interchange of dummies for ∃” ⟩
+     ∃ y • ∃ z • x ⦗ R ⦘ y ∧ y ⦗ S ⦘ z
+  ≡⟨ “Distributivity of ∧ over ∃” ⟩
+    (∃ y • x ⦗ R ⦘ y ∧ (∃ z • y ⦗ S ⦘ z))
+  ≡⟨ “Definition of ⇒ via ∧” with “Body weakening for ∃” ⟩
+    (∃ y • x ⦗ R ⦘ y) ∧ (∃ y • x ⦗ R ⦘ y ∧ (∃ z • y ⦗ S ⦘ z))
+  ≡⟨ “Trading for ∃” ⟩
+    (∃ y • x ⦗ R ⦘ y) ∧ (∃ y ❙ x ⦗ R ⦘ y • (∃ z • y ⦗ S ⦘ z))
+  ≡⟨ “Membership in `Dom`” ⟩
+    x ∈ Dom R ∧ (∃ y ❙ x ⦗ R ⦘ y • y ∈ Dom S)
+
+Theorem “Partial-function application of ⨾”:
+      univalent f  ∧  univalent g  ∧  x ∈ Dom (f ⨾ g)
+   ⇒  (f ⨾ g) @ x = g @ (f @ x)
+Proof:
+  Assuming `univalent f`, `univalent g`, `x ∈ Dom (f ⨾ g)`:
+    Side proof for `x ∈ Dom f`:
+      By assumption `x ∈ Dom (f ⨾ g)` with “Membership in domain of
+    Side proof for `f @ x ∈ Dom g`:
+        x ∈ Dom (f ⨾ g) — This is an assumption
+      ⇒⟨ “Membership in domain of ⨾”, “Weakening” ⟩
+        ∃ y ❙ x ⦗ f ⦘ y • y ∈ Dom g
+      ≡⟨ “Partial-function application” with assumption `univalent f`
+           and local property `x ∈ Dom f` ⟩
+        ∃ y ❙ y = f @ x • y ∈ Dom g
+      ≡⟨ “One-point rule for ∃”, substitution ⟩
+        f @ x ∈ Dom g
+    Side proof for “U” `univalent (f ⨾ g)`:
+      By “Univalence of composition” with assumptions `univalent f` and `univalent g`⟩
+  Continuing:
+      (f ⨾ g) @ x = g @ (f @ x)
+    ≡⟨ “Partial-function application” with local property “U”
+          and assumption `x ∈ Dom (f ⨾ g)` ⟩
+      x ⦗ f ⨾ g ⦘ g @ (f @ x)
+    ≡⟨ “Relation composition” ⟩
+      ∃ y • x ⦗ f ⦘ y ∧ y ⦗ g ⦘ g @ (f @ x)
+    ≡⟨ “Partial-function application” with assumption `univalent f`⟩
+         and local property `x ∈ Dom f`, “Trading for ∃” ⟩   
+      ∃ y ❙ y = f @ x • y ⦗ g ⦘ g @ (f @ x)
+    ≡⟨ “One-point rule for ∃”, substitution ⟩
+      f @ x ⦗ g ⦘ g @ (f @ x) 
+    ≡⟨ “Relationship with @” with assumption `univalent g`
+          and local property `f @ x ∈ Dom g` ⟩
+      true
+
+
+Theorem “Injectivity and @”:
+     univalent f  ∧  injective f  ∧
+     x₁ ∈ Dom f   ∧  x₂ ∈ Dom f
+  ⇒  (f @ x₁ = f @ x₂   ≡   x₁ = x₂)
+Proof:
+  Assuming `univalent f`, `x₁ ∈ Dom f`, `x₂ ∈ Dom f`:
+    Assuming (1) `injective f` and using with “Injectivity”:
+        x₁ = x₂
+      ⇒⟨ “Leibniz” ⟩
+        (f @ z)[z ≔ x₁] = (f @ z)[z ≔ x₂]
+      ≡⟨ Substitution ⟩
+        f @ x₁ = f @ x₂
+      ≡⟨ “Partial-function application” with
+           Assumption `x₂ ∈ Dom f` and
+             Assumption `univalent f` ⟩
+        x₂ ⦗ f ⦘ f @ x₁
+      ≡⟨ “Identity of ∧” ⟩
+        true ∧ x₂ ⦗ f ⦘ f @ x₁
+      ≡⟨ “Partial-function application” with 
+           Assumption `x₂ ∈ Dom f` with Assumption `x₁ ∈ Dom f` with
+             Assumption `univalent f` ⟩
+        x₁ ⦗ f ⦘ f @ x₁ ∧ x₂ ⦗ f ⦘ f @ x₁
+      ⇒⟨ Assumption `injective f` ⟩
+        x₁ = x₂
+
+10.2
+
+Theorem “Addition in **”: R ** (i + j) = R ** i ⨾ R ** j
+Proof:
+  By induction on `i : ℕ`:
+    Base case:
+        R ** (0 + j) = R ** 0 ⨾ R ** j
+      =⟨ “Definition of + for 0” ⟩
+        R ** j = R ** 0 ⨾ R ** j
+      =⟨ “Identity of ⨾”, “Definition of **” ⟩
+        R ** 0 ⨾ R ** j = R ** 0 ⨾ R ** j
+      =⟨ “Reflexivity of =” ⟩ 
+        true
+    Induction step:
+        R ** (suc i + j)
+      =⟨ “Definition of + for `suc`” ⟩
+        R ** (suc (i + j))
+      =⟨ “Definition of **” ⟩
+        R ⨾ R ** (i + j)
+      =⟨ Induction hypothesis ⟩
+        R ⨾ R ** i ⨾ R ** j
+      =⟨ “Definition of **” ⟩
+        R ** suc i ⨾ R ** j
+
+
+Theorem “Characterisation of `_*`: Expanding”:  R ⊆ R *
+Proof:
+     R *
+  =⟨ “Definition of `_*`” ⟩
+     ⋃ i : ℕ • R ** i
+  =⟨ “Zero of ∨” ⟩
+     ⋃ i : ℕ ❙ true ∨ i = 1 • R ** i
+  =⟨ “Range split for ⋃” ⟩
+     (⋃ i : ℕ ❙ true • R ** i) ∪ (⋃ i : ℕ ❙ i = 1 • R ** i)
+  =⟨ “One-point rule for ⋃”, Substitution ⟩
+     (⋃ i : ℕ ❙ true • R ** i) ∪ R ** 1
+  ⊇⟨ “Weakening for ∪”, “Right-identity of **” ⟩
+     R
+
+Theorem “Characterisation of `_*`: Reflexivity”:
+    reflexive (R *)
+Proof:
+  Using “Definition of reflexivity”:
+      R *
+    =⟨ “Definition of `_*`” ⟩
+      ⋃ i : ℕ • R ** i
+    =⟨ “Zero of ∨” ⟩
+      ⋃ i : ℕ ❙ true ∨ i = 0 • R ** i
+    =⟨ “Range split for ⋃” ⟩
+      (⋃ i : ℕ ❙ true • R ** i) ∪ (⋃ i : ℕ ❙ i = 0 • R ** i)
+    =⟨ “One-point rule for ⋃”, Substitution ⟩
+      (⋃ i : ℕ ❙ true • R ** i) ∪ R ** 0
+    ⊇⟨ “Weakening for ∪”, “Definition of **” ⟩
+      𝕀
+
+Theorem “Characterisation of _*: Transitivity”:
+   transitive (R *)
+Proof: 
+      transitive (R *)
+    ≡⟨“Definition of transitivity”⟩
+      R * ⨾ R * ⊆ R *
+    ≡⟨ “Definition of `_*`”⟩
+      (⋃ i : ℕ • R ** i) ⨾  (⋃ j : ℕ • R ** j) ⊆  (⋃ k : ℕ • R ** k)
+    ≡⟨“Distributivity of ⨾ over ⋃” ⟩
+      (⋃ i : ℕ • R ** i ⨾  (⋃ j : ℕ • R ** j)) ⊆  (⋃ k : ℕ • R ** k)
+    ≡⟨“Distributivity of ⨾ over ⋃”⟩
+      (⋃ i : ℕ • ( ⋃ j : ℕ • R ** i ⨾ R ** j) )  ⊆  (⋃ k : ℕ • R ** k)
+    ≡⟨“Characterisation of ⋃”⟩
+      ∀ i : ℕ • ∀ j : ℕ • R ** i ⨾ R ** j ⊆ (⋃ k : ℕ • R ** k)
+
+  Proof for this:
+    For any `i : ℕ`, `j : ℕ`:
+        R ** i ⨾ R ** j
+      =⟨ “Addition in **”⟩
+        R ** (i + j)
+      ⊆⟨“Weakening for ∪”⟩
+        (⋃ k : ℕ • R ** k) ∪ R ** (i + j)
+      =⟨“One-point rule for ⋃”, Substitution⟩
+        (⋃ k : ℕ ❙ true • R ** k) ∪ (⋃ k : ℕ ❙ k = i + j • R ** k)
+      =⟨“Range split for ⋃”⟩
+        (⋃ k : ℕ ❙ true ∨ k = i + j • R ** k)
+      =⟨“Zero of ∨”⟩
+        (⋃ k : ℕ • R ** k)
+
+Theorem “Characterisation of `_*`: Expansion of powers”:
+    R ⊆ S  ⇒  reflexive S  ⇒  transitive S  ⇒ R ** i ⊆ S
+Proof:
+  Assuming `R ⊆ S`:
+    Assuming `reflexive S` and using with “Definition of reflexivity”:
+      Assuming `transitive S` and using with “Definition of transitivity”:
+          By induction on `i : ℕ`:
+            Base case:
+                R ** 0
+              =⟨“Definition of **”⟩
+                𝕀
+              ⊆⟨ Assumption `reflexive S` with “Definition of reflexivity”⟩
+                S
+            Induction step:
+                R ** suc i
+              =⟨“Definition of **”⟩
+                R ⨾ R ** i
+              ⊆⟨“Monotonicity of ⨾” with Induction hypothesis⟩
+                R ⨾ S
+              ⊆⟨“Monotonicity of ⨾” with Assumption `R ⊆ S`⟩
+                S ⨾ S
+              ⊆⟨ Assumption `transitive S`⟩
+                S
+
+Theorem “Characterisation of `_*`: Minimality”:
+    R ⊆ S  ⇒  reflexive S  ⇒  transitive S  ⇒ R * ⊆ S
+Proof:
+  Assuming `R ⊆ S`, `reflexive S`, `transitive S`:
+      R * ⊆ S
+    ≡⟨ “Definition of `_*`” ⟩
+      (⋃ i : ℕ • R ** i) ⊆ S
+    ≡⟨ “Characterisation of ⋃” ⟩
+      ∀ i : ℕ • R ** i ⊆ S
+    ≡⟨ “Characterisation of `_*`: Expansion of powers” with assumptions `R ⊆ S` and `reflexive S`
+         and `transitive S` ⟩
+      ∀ i : ℕ • true
+    ≡⟨ “True ∀ body” ⟩
+      true
+
+
