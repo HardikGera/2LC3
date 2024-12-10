@@ -1492,6 +1492,26 @@ Proof:
     ∃ x ❙ x ∈ A • x ⦗ R ⦘ y
 
 9.3
+
+Theorem “Reflexivity of ⨾”:
+ reflexive R ⇒ reflexive S ⇒ reflexive (R ⨾ S)
+Proof:
+ Assuming `reflexive R`, `reflexive S`:
+ reflexive (R ⨾ S)
+ =⟨ “Definition of reflexivity” ⟩
+ � ⊆ (R ⨾ S)
+ =⟨ “Identity of ⨾” ⟩
+ � ⨾ � ⊆ (R ⨾ S)
+ ⇐⟨ “Monotonicity of ⨾” with “Shunting” ⟩
+ � ⊆ R ∧ � ⊆ S
+ =⟨ Assumption `reflexive R` with “Definition of reflexivity”
+ true ∧ � ⊆ S
+ =⟨ Assumption `reflexive S` with “Definition of reflexivity”
+ true ∧ true
+ =⟨ “Idempotency of ∧” ⟩
+ true
+
+
 Theorem “Inverse of ⨾”:
     S₁ is-inverse-of R₁  ∧  S₂ is-inverse-of R₂
   ⇒ (S₂ ⨾ S₁) is-inverse-of (R₁ ⨾ R₂)
